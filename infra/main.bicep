@@ -75,21 +75,15 @@ resource database 'Microsoft.Sql/servers/databases@2023-08-01-preview' = {
   }
 }
 
-resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = if (deployStorage) {
-  name: storageName
-  location: location
-  sku: {
-    name: 'Standard_LRS'
-  }
-  kind: 'StorageV2'
-  properties: {
-    minimumTlsVersion: 'TLS1_2'
-    allowBlobPublicAccess: false
-    supportsHttpsTrafficOnly: true
+module storage 'storage.bicep' = if (deployStorage) {
+  name: 'storage'
+  params: {
+    location: location
+    name: storageName
   }
 }
 
-var storageConnection = deployStorage ? 'DefaultEndpointsProtocol=https;AccountName=${storage.name};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}' : ''
+var storageConnection = deployStorage ? storage.outputs.connectionString : ''
 var sqlConnection = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${databaseName};User ID=${sqlAdminLogin};Password=${sqlAdminPassword};Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
 
 resource web 'Microsoft.Web/sites@2024-04-01' = {
