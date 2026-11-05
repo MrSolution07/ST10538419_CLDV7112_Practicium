@@ -33,7 +33,7 @@ Development uses SQLite at `src/ST10538419_CLDV7112_Practicium.Web/App_Data/loca
 
 ## Azure
 
-Deploy after the brief's features build and the tests pass. The student subscription has about $100 of credit. The template uses a B1 plan, a Basic SQL database, a Storage account, a Consumption Function App, and Application Insights. Those services are already part of `infra/main.bicep`. Do not add a second copy. Production refuses to start if SQL, storage, or Application Insights is empty.
+Deploy after the brief's features build and the tests pass. The student subscription has about $100 of credit. `infra/main.bicep` creates one B1 plan, a Basic SQL database, one Storage account, one Function App on that same plan, and Application Insights. Do not add a second copy. Production refuses to start if SQL, storage, or Application Insights is empty.
 
 ```bash
 az account set --subscription "Azure for Students"
