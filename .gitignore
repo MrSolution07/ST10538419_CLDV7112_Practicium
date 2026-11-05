@@ -493,3 +493,4 @@ graphify-out/
 # Deploy password and local Functions settings
 infra/.deploy.env
 local.settings.json
+publish-functions/
