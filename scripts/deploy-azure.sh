@@ -60,7 +60,7 @@ az sql server firewall-rule create \
 
 rm -rf "$ROOT/publish" "$ROOT/publish-functions"
 dotnet publish "$ROOT/src/ST10538419_CLDV7112_Practicium.Web/ST10538419_CLDV7112_Practicium.Web.csproj" --configuration Release --output "$ROOT/publish"
-WEB_ZIP="$(mktemp -t practicum-web.XXXXXX.zip)"
+WEB_ZIP="$(mktemp -d)/web.zip"
 (cd "$ROOT/publish" && zip -qr "$WEB_ZIP" .)
 az webapp deploy \
   --resource-group "$RG" \
@@ -69,7 +69,7 @@ az webapp deploy \
   --type zip
 
 dotnet publish "$ROOT/src/ST10538419_CLDV7112_Practicium.Functions/ST10538419_CLDV7112_Practicium.Functions.csproj" --configuration Release --output "$ROOT/publish-functions"
-FN_ZIP="$(mktemp -t practicum-fn.XXXXXX.zip)"
+FN_ZIP="$(mktemp -d)/functions.zip"
 (cd "$ROOT/publish-functions" && zip -qr "$FN_ZIP" .)
 az functionapp deploy \
   --resource-group "$FN_RG" \
