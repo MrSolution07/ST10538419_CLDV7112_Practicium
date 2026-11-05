@@ -1,4 +1,4 @@
-namespace FinalCloudDev.Application.Data;
+namespace ST10538419_CLDV7112_Practicium.Application.Data;
 
 public interface IDatabaseStartup
 {

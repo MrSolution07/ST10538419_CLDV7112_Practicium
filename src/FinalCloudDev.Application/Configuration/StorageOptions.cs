@@ -1,4 +1,4 @@
-namespace FinalCloudDev.Application.Configuration;
+namespace ST10538419_CLDV7112_Practicium.Application.Configuration;
 
 public sealed class StorageOptions
 {

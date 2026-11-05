@@ -1,4 +1,4 @@
-namespace FinalCloudDev.Application.Common;
+namespace ST10538419_CLDV7112_Practicium.Application.Common;
 
 public sealed class ServiceResult<T>
 {
