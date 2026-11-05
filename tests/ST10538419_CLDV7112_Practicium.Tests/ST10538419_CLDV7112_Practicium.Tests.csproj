@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FinalCloudDev.Application\FinalCloudDev.Application.csproj" />
-    <ProjectReference Include="..\..\src\FinalCloudDev.Infrastructure\FinalCloudDev.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\ST10538419_CLDV7112_Practicium.Application\ST10538419_CLDV7112_Practicium.Application.csproj" />
+    <ProjectReference Include="..\..\src\ST10538419_CLDV7112_Practicium.Infrastructure\ST10538419_CLDV7112_Practicium.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
