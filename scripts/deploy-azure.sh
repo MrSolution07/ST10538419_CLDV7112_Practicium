@@ -2,8 +2,8 @@
 set -euo pipefail
 
 LOCATION="${LOCATION:-uaenorth}"
-RG="${RG:-rg-final-cloud-dev}"
-PREFIX="${PREFIX:-fcd}"
+RG="${RG:-rg-st10538419-cldv7112}"
+PREFIX="${PREFIX:-st10538419}"
 DEPLOY_STORAGE="${DEPLOY_STORAGE:-false}"
 
 if [[ -z "${SQL_ADMIN_PASSWORD:-}" ]]; then
@@ -41,7 +41,7 @@ az sql server firewall-rule create \
   --start-ip-address "$CLIENT_IP" \
   --end-ip-address "$CLIENT_IP"
 
-dotnet publish src/FinalCloudDev.Web/FinalCloudDev.Web.csproj --configuration Release --output ./publish
+dotnet publish src/ST10538419_CLDV7112_Practicium.Web/ST10538419_CLDV7112_Practicium.Web.csproj --configuration Release --output ./publish
 az webapp deploy \
   --resource-group "$RG" \
   --name "$WEB_NAME" \
