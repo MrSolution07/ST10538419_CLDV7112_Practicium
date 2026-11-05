@@ -486,3 +486,6 @@ App_Data/
 *.db
 *.db-shm
 *.db-wal
+
+# Generated local knowledge graph
+graphify-out/
