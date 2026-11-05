@@ -1,9 +1,9 @@
-using FinalCloudDev.Application.Records;
-using FinalCloudDev.Infrastructure.Data;
+using ST10538419_CLDV7112_Practicium.Application.Records;
+using ST10538419_CLDV7112_Practicium.Infrastructure.Data;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinalCloudDev.Tests;
+namespace ST10538419_CLDV7112_Practicium.Tests;
 
 public class ReferenceRecordPersistenceTests
 {

@@ -1,7 +1,7 @@
-using FinalCloudDev.Application.Records;
-using FinalCloudDev.Domain.Entities;
+using ST10538419_CLDV7112_Practicium.Application.Records;
+using ST10538419_CLDV7112_Practicium.Domain.Entities;
 
-namespace FinalCloudDev.Tests.Support;
+namespace ST10538419_CLDV7112_Practicium.Tests.Support;
 
 public sealed class InMemoryReferenceRecordRepository : IReferenceRecordRepository
 {

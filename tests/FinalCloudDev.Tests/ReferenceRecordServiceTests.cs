@@ -1,7 +1,7 @@
-using FinalCloudDev.Application.Records;
-using FinalCloudDev.Tests.Support;
+using ST10538419_CLDV7112_Practicium.Application.Records;
+using ST10538419_CLDV7112_Practicium.Tests.Support;
 
-namespace FinalCloudDev.Tests;
+namespace ST10538419_CLDV7112_Practicium.Tests;
 
 public class ReferenceRecordServiceTests
 {

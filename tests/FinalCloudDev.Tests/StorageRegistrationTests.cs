@@ -1,11 +1,11 @@
-using FinalCloudDev.Infrastructure;
-using FinalCloudDev.Infrastructure.Storage;
+using ST10538419_CLDV7112_Practicium.Infrastructure;
+using ST10538419_CLDV7112_Practicium.Infrastructure.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
-namespace FinalCloudDev.Tests;
+namespace ST10538419_CLDV7112_Practicium.Tests;
 
 public class StorageRegistrationTests
 {
@@ -52,7 +52,7 @@ public class StorageRegistrationTests
     {
         public string EnvironmentName { get; set; } = Environments.Development;
 
-        public string ApplicationName { get; set; } = "FinalCloudDev.Tests";
+        public string ApplicationName { get; set; } = "ST10538419_CLDV7112_Practicium.Tests";
 
         public string ContentRootPath { get; set; } = Path.GetTempPath();
 
