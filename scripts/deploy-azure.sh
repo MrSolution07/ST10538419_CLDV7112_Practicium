@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-LOCATION="${LOCATION:-southafricanorth}"
+LOCATION="${LOCATION:-uaenorth}"
 RG="${RG:-rg-final-cloud-dev}"
 PREFIX="${PREFIX:-fcd}"
 DEPLOY_STORAGE="${DEPLOY_STORAGE:-false}"
