@@ -58,19 +58,23 @@ az sql server firewall-rule create \
   --start-ip-address "$CLIENT_IP" \
   --end-ip-address "$CLIENT_IP"
 
-rm -rf ./publish ./publish-functions
-dotnet publish src/ST10538419_CLDV7112_Practicium.Web/ST10538419_CLDV7112_Practicium.Web.csproj --configuration Release --output ./publish
+rm -rf "$ROOT/publish" "$ROOT/publish-functions"
+dotnet publish "$ROOT/src/ST10538419_CLDV7112_Practicium.Web/ST10538419_CLDV7112_Practicium.Web.csproj" --configuration Release --output "$ROOT/publish"
+WEB_ZIP="$(mktemp -t practicum-web.XXXXXX.zip)"
+(cd "$ROOT/publish" && zip -qr "$WEB_ZIP" .)
 az webapp deploy \
   --resource-group "$RG" \
   --name "$WEB_NAME" \
-  --src-path ./publish \
+  --src-path "$WEB_ZIP" \
   --type zip
 
-dotnet publish src/ST10538419_CLDV7112_Practicium.Functions/ST10538419_CLDV7112_Practicium.Functions.csproj --configuration Release --output ./publish-functions
+dotnet publish "$ROOT/src/ST10538419_CLDV7112_Practicium.Functions/ST10538419_CLDV7112_Practicium.Functions.csproj" --configuration Release --output "$ROOT/publish-functions"
+FN_ZIP="$(mktemp -t practicum-fn.XXXXXX.zip)"
+(cd "$ROOT/publish-functions" && zip -qr "$FN_ZIP" .)
 az functionapp deploy \
   --resource-group "$FN_RG" \
   --name "$FUNCTION_NAME" \
-  --src-path ./publish-functions \
+  --src-path "$FN_ZIP" \
   --type zip
 
 HOST_NAME="$(az webapp show --resource-group "$RG" --name "$WEB_NAME" --query defaultHostName -o tsv)"
