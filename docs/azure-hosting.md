@@ -35,7 +35,7 @@ SQL_ADMIN_PASSWORD='replace-with-a-strong-password' ./scripts/deploy-azure.sh
 
 If `SQL_ADMIN_PASSWORD` is unset, the script writes a generated password to `infra/.deploy.env` and reuses it on the next run. That file is gitignored.
 
-The script creates `rg-st10538419-cldv7112`, deploys `infra/main.bicep`, allows the current public IP through the SQL firewall, publishes the site and the Function App, and prints the URLs. Open `/health` after the first start. The first request can take a minute while the migration runs.
+The script creates `rg-st10538419-cldv7112`, deploys `infra/main.bicep`, allows the current public IP through the SQL firewall, publishes the site and the Function App, and prints the URLs. Open `/health` after the first start. The first request can take a minute while the migration runs. Delete that group when it is no longer the submission, so a stopped or duplicate stack does not keep spending the credit.
 
 Do not commit `SQL_ADMIN_PASSWORD`.
 
