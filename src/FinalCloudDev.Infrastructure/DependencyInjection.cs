@@ -1,14 +1,14 @@
-using FinalCloudDev.Application.Configuration;
-using FinalCloudDev.Application.Data;
-using FinalCloudDev.Application.Records;
-using FinalCloudDev.Infrastructure.Data;
-using FinalCloudDev.Infrastructure.Storage;
+using ST10538419_CLDV7112_Practicium.Application.Configuration;
+using ST10538419_CLDV7112_Practicium.Application.Data;
+using ST10538419_CLDV7112_Practicium.Application.Records;
+using ST10538419_CLDV7112_Practicium.Infrastructure.Data;
+using ST10538419_CLDV7112_Practicium.Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace FinalCloudDev.Infrastructure;
+namespace ST10538419_CLDV7112_Practicium.Infrastructure;
 
 public static class DependencyInjection
 {
