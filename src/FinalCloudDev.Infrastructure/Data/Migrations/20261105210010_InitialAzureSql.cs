@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FinalCloudDev.Infrastructure.Data.Migrations
+namespace ST10538419_CLDV7112_Practicium.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialAzureSql : Migration
