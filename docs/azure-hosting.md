@@ -2,7 +2,7 @@
 
 Subscription: **Azure for Students**. Account used for this foundation: `ST10538419@rcconnect.edu.za`. Role on that subscription: Owner. Credit remaining when this foundation was prepared: about **$100 USD**, expiring **26 Feb 2027**.
 
-Region: `southafricanorth`.
+Region: `uaenorth`. The other allowed regions are `switzerlandnorth`, `centralindia`, `brazilsouth`, and `austriaeast`. See `docs/azure-regions.md`. `southafricanorth` is blocked by policy.
 
 ## What gets created
 
