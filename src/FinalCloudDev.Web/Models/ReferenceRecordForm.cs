@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using FinalCloudDev.Application.Records;
+using ST10538419_CLDV7112_Practicium.Application.Records;
 
-namespace FinalCloudDev.Web.Models;
+namespace ST10538419_CLDV7112_Practicium.Web.Models;
 
 public sealed class ReferenceRecordForm
 {

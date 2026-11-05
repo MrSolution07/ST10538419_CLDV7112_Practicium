@@ -1,4 +1,4 @@
-namespace FinalCloudDev.Web.Models;
+namespace ST10538419_CLDV7112_Practicium.Web.Models;
 
 public class ErrorViewModel
 {
