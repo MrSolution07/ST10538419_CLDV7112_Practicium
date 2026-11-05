@@ -1,11 +1,11 @@
-using FinalCloudDev.Application.Configuration;
-using FinalCloudDev.Application.Records;
-using FinalCloudDev.Web.Models;
-using FinalCloudDev.Web.Options;
+using ST10538419_CLDV7112_Practicium.Application.Configuration;
+using ST10538419_CLDV7112_Practicium.Application.Records;
+using ST10538419_CLDV7112_Practicium.Web.Models;
+using ST10538419_CLDV7112_Practicium.Web.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace FinalCloudDev.Web.Controllers;
+namespace ST10538419_CLDV7112_Practicium.Web.Controllers;
 
 public class HomeController(
     IReferenceRecordService records,

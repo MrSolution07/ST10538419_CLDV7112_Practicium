@@ -1,8 +1,8 @@
-using FinalCloudDev.Application.Records;
-using FinalCloudDev.Web.Models;
+using ST10538419_CLDV7112_Practicium.Application.Records;
+using ST10538419_CLDV7112_Practicium.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinalCloudDev.Web.Controllers;
+namespace ST10538419_CLDV7112_Practicium.Web.Controllers;
 
 public class ReferenceRecordsController(IReferenceRecordService records) : Controller
 {
