@@ -1,8 +1,8 @@
-using FinalCloudDev.Application.Records;
-using FinalCloudDev.Domain.Entities;
+using ST10538419_CLDV7112_Practicium.Application.Records;
+using ST10538419_CLDV7112_Practicium.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinalCloudDev.Infrastructure.Data;
+namespace ST10538419_CLDV7112_Practicium.Infrastructure.Data;
 
 public sealed class ReferenceRecordRepository(AppDbContext db) : IReferenceRecordRepository
 {

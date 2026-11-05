@@ -1,7 +1,7 @@
-using FinalCloudDev.Domain.Entities;
+using ST10538419_CLDV7112_Practicium.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinalCloudDev.Infrastructure.Data;
+namespace ST10538419_CLDV7112_Practicium.Infrastructure.Data;
 
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
