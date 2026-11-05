@@ -38,11 +38,11 @@ If the brief conflicts with the sample `ReferenceRecord` module, follow the brie
 
 Layers:
 
-- `FinalCloudDev.Domain` — entities only
-- `FinalCloudDev.Application` — inputs, service rules, repository ports
-- `FinalCloudDev.Infrastructure` — EF Core, Azure SDK clients
-- `FinalCloudDev.Web` — controllers, view models, Razor
-- `tests/FinalCloudDev.Tests` — service rules and one persistence test per new aggregate
+- `ST10538419_CLDV7112_Practicium.Domain` — entities only
+- `ST10538419_CLDV7112_Practicium.Application` — inputs, service rules, repository ports
+- `ST10538419_CLDV7112_Practicium.Infrastructure` — EF Core, Azure SDK clients
+- `ST10538419_CLDV7112_Practicium.Web` — controllers, view models, Razor
+- `tests/ST10538419_CLDV7112_Practicium.Tests` — service rules and one persistence test per new aggregate
 
 Controllers bind a form, call a service, and map `ServiceResult` onto `ModelState`. Controllers do not use `DbContext`.
 
@@ -68,7 +68,7 @@ Add a `DbSet`, map the entity in `AppDbContext.OnModelCreating`, then:
 
 ```bash
 dotnet tool restore
-dotnet ef migrations add <Name> --project src/FinalCloudDev.Infrastructure --startup-project src/FinalCloudDev.Infrastructure --output-dir Data/Migrations
+dotnet ef migrations add <Name> --project src/ST10538419_CLDV7112_Practicium.Infrastructure --startup-project src/ST10538419_CLDV7112_Practicium.Infrastructure --output-dir Data/Migrations
 ```
 
 Never put a real connection string in `appsettings.json`. Use `dotnet user-secrets` locally and App Service settings in Azure. The Bicep template sets those settings.
@@ -94,7 +94,7 @@ Deploy from a machine that is already logged in with `az login`:
 SQL_ADMIN_PASSWORD='a-strong-password' ./scripts/deploy-azure.sh
 ```
 
-The script creates `rg-final-cloud-dev`, deploys Bicep, opens the SQL firewall for the current IP, publishes the site, and prints the HTTPS URL. The app applies EF migrations on startup.
+The script creates `rg-st10538419-cldv7112`, deploys Bicep, opens the SQL firewall for the current IP, publishes the site, and prints the HTTPS URL. The app applies EF migrations on startup.
 
 GitHub deploy is `.github/workflows/deploy.yml`. It needs OIDC secrets documented in `docs/azure-hosting.md`. Do not deploy until the brief's features are in the build, so a broken site is not what the marker opens.
 
