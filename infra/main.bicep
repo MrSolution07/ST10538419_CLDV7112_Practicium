@@ -11,10 +11,10 @@ targetScope = 'resourceGroup'
 param location string = 'uaenorth'
 
 @description('Short prefix used in resource names.')
-param namePrefix string = 'fcd'
+param namePrefix string = 'st10538419'
 
 @description('SQL administrator login. Not a secret.')
-param sqlAdminLogin string = 'fcdadmin'
+param sqlAdminLogin string = 'st10538419'
 
 @secure()
 param sqlAdminPassword string
@@ -26,8 +26,8 @@ var suffix = uniqueString(resourceGroup().id)
 var planName = '${namePrefix}-plan'
 var webName = toLower(take('${namePrefix}${suffix}', 24))
 var sqlServerName = toLower(take('${namePrefix}${suffix}', 20))
-var databaseName = 'FinalCloudDev'
-var storageName = toLower(take('fcd${suffix}', 24))
+var databaseName = 'ST10538419_CLDV7112_Practicium'
+var storageName = toLower(take('st10538419${suffix}', 24))
 
 resource plan 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: planName
