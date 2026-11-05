@@ -13,9 +13,9 @@ Resources:
 - Web app, .NET 10, HTTPS only, always on
 - Azure SQL server and Basic database
 - Firewall rule that allows Azure services
-- Storage account, Linux Consumption Function App, Log Analytics, and Application Insights are always created
+- Storage account, one Function App on the same B1 plan, Log Analytics, and Application Insights
 
-The script also adds a firewall rule for the current public IP, publishes the web project, and deploys the zip. The site runs migrations at startup.
+The script also adds a firewall rule for the current public IP, then publishes the web app and the Function App. The site runs migrations at startup. Linux Consumption did not start in `uaenorth`, so the worker shares the B1 plan.
 
 Before the first deploy:
 
