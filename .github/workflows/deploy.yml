@@ -18,7 +18,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Ensure resource group
-        run: az group create --name rg-final-cloud-dev --location southafricanorth
+        run: az group create --name rg-final-cloud-dev --location uaenorth
       - uses: azure/arm-deploy@v2
         with:
           scope: resourcegroup
