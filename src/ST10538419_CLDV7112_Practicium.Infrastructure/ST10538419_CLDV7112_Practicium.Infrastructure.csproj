@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\FinalCloudDev.Application\FinalCloudDev.Application.csproj" />
+    <ProjectReference Include="..\ST10538419_CLDV7112_Practicium.Application\ST10538419_CLDV7112_Practicium.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
