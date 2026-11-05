@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\FinalCloudDev.Domain\FinalCloudDev.Domain.csproj" />
+    <ProjectReference Include="..\ST10538419_CLDV7112_Practicium.Domain\ST10538419_CLDV7112_Practicium.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
