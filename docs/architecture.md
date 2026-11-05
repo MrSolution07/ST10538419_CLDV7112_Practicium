@@ -4,9 +4,9 @@ The web app is ASP.NET Core MVC on .NET 10. Data access is EF Core. The producti
 
 ```text
 Browser
-  -> FinalCloudDev.Web (controllers, Razor)
-    -> FinalCloudDev.Application (services)
-      -> FinalCloudDev.Infrastructure (EF Core, Azure Storage)
+  -> ST10538419_CLDV7112_Practicium.Web (controllers, Razor)
+    -> ST10538419_CLDV7112_Practicium.Application (services)
+      -> ST10538419_CLDV7112_Practicium.Infrastructure (EF Core, Azure Storage)
         -> SQLite locally, or Azure SQL in production
 ```
 
