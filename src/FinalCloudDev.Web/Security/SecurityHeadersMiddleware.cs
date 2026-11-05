@@ -1,4 +1,4 @@
-namespace FinalCloudDev.Web.Security;
+namespace ST10538419_CLDV7112_Practicium.Web.Security;
 
 public sealed class SecurityHeadersMiddleware(RequestDelegate next)
 {

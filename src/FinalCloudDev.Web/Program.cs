@@ -1,10 +1,10 @@
-using FinalCloudDev.Application;
-using FinalCloudDev.Application.Configuration;
-using FinalCloudDev.Application.Data;
-using FinalCloudDev.Infrastructure;
-using FinalCloudDev.Infrastructure.Data;
-using FinalCloudDev.Web.Options;
-using FinalCloudDev.Web.Security;
+using ST10538419_CLDV7112_Practicium.Application;
+using ST10538419_CLDV7112_Practicium.Application.Configuration;
+using ST10538419_CLDV7112_Practicium.Application.Data;
+using ST10538419_CLDV7112_Practicium.Infrastructure;
+using ST10538419_CLDV7112_Practicium.Infrastructure.Data;
+using ST10538419_CLDV7112_Practicium.Web.Options;
+using ST10538419_CLDV7112_Practicium.Web.Security;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
