@@ -1,0 +1,45 @@
+﻿@model HomeStatusViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>@Model.SiteName</h1>
+<p class="lede">@Model.Tagline</p>
+
+<section class="grid" aria-label="Foundation status">
+    <article class="panel">
+        <span class="status-label">Database</span>
+        <strong class="status-value">@Model.DatabaseProvider</strong>
+    </article>
+    <article class="panel">
+        <span class="status-label">Active records</span>
+        <strong class="status-value">@Model.ActiveRecords</strong>
+    </article>
+    <article class="panel">
+        <span class="status-label">Blob</span>
+        <strong class="status-value @(Model.BlobConfigured ? "ok" : "warn")">@(Model.BlobConfigured ? "Ready" : "Off")</strong>
+    </article>
+    <article class="panel">
+        <span class="status-label">Queue</span>
+        <strong class="status-value @(Model.QueueConfigured ? "ok" : "warn")">@(Model.QueueConfigured ? "Ready" : "Off")</strong>
+    </article>
+    <article class="panel">
+        <span class="status-label">Table</span>
+        <strong class="status-value @(Model.TableConfigured ? "ok" : "warn")">@(Model.TableConfigured ? "Ready" : "Off")</strong>
+    </article>
+    <article class="panel">
+        <span class="status-label">Files</span>
+        <strong class="status-value @(Model.FileShareConfigured ? "ok" : "warn")">@(Model.FileShareConfigured ? "Ready" : "Off")</strong>
+    </article>
+</section>
+
+<section class="panel">
+    <h2>When the brief arrives</h2>
+    <ol>
+        <li>Put the question in <code>docs/brief/</code>.</li>
+        <li>Follow <code>AGENTS.md</code> and <code>docs/SKILLS.md</code>.</li>
+        <li>Copy the Records module for each new entity.</li>
+        <li>Deploy with <code>scripts/deploy-azure.sh</code> only after the features are real.</li>
+    </ol>
+    <p><a class="btn btn-accent" asp-controller="ReferenceRecords" asp-action="Index">Open the reference module</a></p>
+</section>
