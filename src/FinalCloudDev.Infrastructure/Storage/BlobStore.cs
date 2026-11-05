@@ -1,9 +1,9 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using FinalCloudDev.Application.Configuration;
+using ST10538419_CLDV7112_Practicium.Application.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace FinalCloudDev.Infrastructure.Storage;
+namespace ST10538419_CLDV7112_Practicium.Infrastructure.Storage;
 
 public sealed class AzureBlobStore(IOptions<StorageOptions> options) : IBlobStore
 {

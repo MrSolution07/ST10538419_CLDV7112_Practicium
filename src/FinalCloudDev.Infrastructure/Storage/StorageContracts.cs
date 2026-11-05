@@ -1,4 +1,4 @@
-namespace FinalCloudDev.Infrastructure.Storage;
+namespace ST10538419_CLDV7112_Practicium.Infrastructure.Storage;
 
 public interface IBlobStore
 {
