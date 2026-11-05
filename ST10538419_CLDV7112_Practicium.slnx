@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ST10538419_CLDV7112_Practicium.Application/ST10538419_CLDV7112_Practicium.Application.csproj" />
+    <Project Path="src/ST10538419_CLDV7112_Practicium.Domain/ST10538419_CLDV7112_Practicium.Domain.csproj" />
+    <Project Path="src/ST10538419_CLDV7112_Practicium.Infrastructure/ST10538419_CLDV7112_Practicium.Infrastructure.csproj" />
+    <Project Path="src/ST10538419_CLDV7112_Practicium.Web/ST10538419_CLDV7112_Practicium.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ST10538419_CLDV7112_Practicium.Tests/ST10538419_CLDV7112_Practicium.Tests.csproj" />
+  </Folder>
+</Solution>
