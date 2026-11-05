@@ -1,7 +1,14 @@
 targetScope = 'resourceGroup'
 
-@description('Azure region. South Africa North matches the student account.')
-param location string = 'southafricanorth'
+@description('Only regions allowed by policy "Allowed resource deployment regions". southafricanorth is denied on this subscription.')
+@allowed([
+  'uaenorth'
+  'switzerlandnorth'
+  'centralindia'
+  'brazilsouth'
+  'austriaeast'
+])
+param location string = 'uaenorth'
 
 @description('Short prefix used in resource names.')
 param namePrefix string = 'fcd'
