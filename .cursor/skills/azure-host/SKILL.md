@@ -5,7 +5,7 @@ description: Deploy the MVC app to Azure App Service with Azure SQL using the Bi
 
 # Azure host
 
-Template: `infra/main.bicep`. Script: `scripts/deploy-azure.sh`. Region default: `southafricanorth`.
+Template: `infra/main.bicep`. Script: `scripts/deploy-azure.sh`. Region default: `uaenorth`. Allowed: `uaenorth`, `switzerlandnorth`, `centralindia`, `brazilsouth`, `austriaeast`. See `docs/azure-regions.md`.
 
 Resources:
 
