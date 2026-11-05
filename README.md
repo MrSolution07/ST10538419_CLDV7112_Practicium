@@ -1,4 +1,4 @@
-# Final Cloud Dev
+# ST10538419 CLDV7112 Practicium
 
 ASP.NET Core MVC foundation for the final cloud submission. The assignment question is not in the repo yet. Drop it in `docs/brief/` and follow `AGENTS.md`.
 
@@ -15,9 +15,9 @@ Author: Christian Bulabula Emungu.
 ## Run locally
 
 ```bash
-dotnet restore FinalCloudDev.slnx
+dotnet restore ST10538419_CLDV7112_Practicium.slnx
 dotnet test
-dotnet run --project src/FinalCloudDev.Web
+dotnet run --project src/ST10538419_CLDV7112_Practicium.Web
 ```
 
 Open the HTTPS URL printed by the CLI. The home page shows the database provider and a sample record.
@@ -46,10 +46,10 @@ The public URL is printed at the end of the script. Put that URL in this README 
 ## Layout
 
 ```text
-src/FinalCloudDev.Domain            entities
-src/FinalCloudDev.Application       services and ports
-src/FinalCloudDev.Infrastructure    EF Core and Azure clients
-src/FinalCloudDev.Web               MVC site
-tests/FinalCloudDev.Tests           service and persistence tests
+src/ST10538419_CLDV7112_Practicium.Domain            entities
+src/ST10538419_CLDV7112_Practicium.Application       services and ports
+src/ST10538419_CLDV7112_Practicium.Infrastructure    EF Core and Azure clients
+src/ST10538419_CLDV7112_Practicium.Web               MVC site
+tests/ST10538419_CLDV7112_Practicium.Tests           service and persistence tests
 infra/main.bicep                    App Service and Azure SQL
 ```
