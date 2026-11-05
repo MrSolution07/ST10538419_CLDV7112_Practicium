@@ -11,11 +11,11 @@ This repository is the foundation for a final cloud submission. The business rul
 
 ## Structure
 
-- `src/FinalCloudDev.Domain` holds entities.
-- `src/FinalCloudDev.Application` holds validation and use cases.
-- `src/FinalCloudDev.Infrastructure` holds EF Core and Azure clients.
-- `src/FinalCloudDev.Web` holds controllers and Razor views.
-- `tests/FinalCloudDev.Tests` holds the automated checks.
+- `src/ST10538419_CLDV7112_Practicium.Domain` holds entities.
+- `src/ST10538419_CLDV7112_Practicium.Application` holds validation and use cases.
+- `src/ST10538419_CLDV7112_Practicium.Infrastructure` holds EF Core and Azure clients.
+- `src/ST10538419_CLDV7112_Practicium.Web` holds controllers and Razor views.
+- `tests/ST10538419_CLDV7112_Practicium.Tests` holds the automated checks.
 - `infra/main.bicep` creates App Service and Azure SQL.
 - `scripts/deploy-azure.sh` publishes the site.
 
@@ -24,12 +24,12 @@ This repository is the foundation for a final cloud submission. The business rul
 ## Local run
 
 ```bash
-dotnet restore FinalCloudDev.slnx
+dotnet restore ST10538419_CLDV7112_Practicium.slnx
 dotnet test
-dotnet run --project src/FinalCloudDev.Web
+dotnet run --project src/ST10538419_CLDV7112_Practicium.Web
 ```
 
-Development uses SQLite at `src/FinalCloudDev.Web/App_Data/local.db`. That file is gitignored.
+Development uses SQLite at `src/ST10538419_CLDV7112_Practicium.Web/App_Data/local.db`. That file is gitignored.
 
 ## Azure
 
