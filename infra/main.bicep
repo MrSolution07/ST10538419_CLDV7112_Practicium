@@ -83,7 +83,7 @@ module storage 'storage.bicep' = if (deployStorage) {
   }
 }
 
-var storageConnection = deployStorage ? storage.outputs.connectionString : ''
+var storageConnection = deployStorage ? storage!.outputs.connectionString : ''
 var sqlConnection = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${databaseName};User ID=${sqlAdminLogin};Password=${sqlAdminPassword};Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
 
 resource web 'Microsoft.Web/sites@2024-04-01' = {
