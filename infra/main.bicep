@@ -19,6 +19,9 @@ param sqlAdminLogin string = 'st10538419'
 @secure()
 param sqlAdminPassword string
 
+@description('Separate group. Linux Consumption cannot share a group that already has a B1 plan.')
+param functionResourceGroup string = 'rg-st10538419-cldv7112-fn'
+
 var suffix = uniqueString(resourceGroup().id)
 var planName = '${namePrefix}-plan'
 var webName = toLower(take('${namePrefix}${suffix}', 24))
@@ -35,19 +38,6 @@ resource plan 'Microsoft.Web/serverfarms@2024-04-01' = {
   sku: {
     name: 'B1'
     tier: 'Basic'
-  }
-  kind: 'linux'
-  properties: {
-    reserved: true
-  }
-}
-
-resource functionPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
-  name: '${namePrefix}-fn'
-  location: location
-  sku: {
-    name: 'Y1'
-    tier: 'Dynamic'
   }
   kind: 'linux'
   properties: {
@@ -184,39 +174,15 @@ resource web 'Microsoft.Web/sites@2024-04-01' = {
   }
 }
 
-resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
-  name: functionName
-  location: location
-  kind: 'functionapp,linux'
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    serverFarmId: functionPlan.id
-    httpsOnly: true
-    siteConfig: {
-      linuxFxVersion: 'DOTNET-ISOLATED|10.0'
-      ftpsState: 'Disabled'
-      minTlsVersion: '1.2'
-      appSettings: [
-        {
-          name: 'AzureWebJobsStorage'
-          value: storageConnection
-        }
-        {
-          name: 'FUNCTIONS_EXTENSION_VERSION'
-          value: '~4'
-        }
-        {
-          name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet-isolated'
-        }
-        {
-          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: insights.properties.ConnectionString
-        }
-      ]
-    }
+module functions 'functionapp.bicep' = {
+  name: 'functions'
+  scope: resourceGroup(functionResourceGroup)
+  params: {
+    location: location
+    functionName: functionName
+    planName: '${namePrefix}-fn'
+    storageConnection: storageConnection
+    insightsConnection: insights.properties.ConnectionString
   }
 }
 
@@ -224,6 +190,6 @@ output webAppName string = web.name
 output webAppHost string = web.properties.defaultHostName
 output sqlServerName string = sqlServer.name
 output sqlServerHost string = sqlServer.properties.fullyQualifiedDomainName
-output functionAppName string = functionApp.name
-output functionAppHost string = functionApp.properties.defaultHostName
+output functionAppName string = functions.outputs.functionAppName
+output functionAppHost string = functions.outputs.functionAppHost
 output storageAccountName string = storage.name

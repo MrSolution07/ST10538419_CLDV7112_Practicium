@@ -12,7 +12,7 @@ Region: `uaenorth`. The other allowed regions are `switzerlandnorth`, `centralin
 | Web app | .NET 10 | The MVC site. HTTPS only. |
 | Azure SQL | Basic | Relational database for EF Core. |
 | Storage account | Standard LRS | Blobs, queues, tables, and file shares. Always created. |
-| Function App | Linux Consumption, .NET isolated | Queue worker. Uses the same storage account. |
+| Function App | Linux Consumption, .NET isolated | Queue worker in `rg-st10538419-cldv7112-fn`. Consumption Linux cannot share the B1 resource group. |
 | Log Analytics + Application Insights | PerGB2018 | Web and Functions logs land here, not only on the local console. |
 
 The web app receives:

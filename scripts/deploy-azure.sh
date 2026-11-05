@@ -3,6 +3,7 @@ set -euo pipefail
 
 LOCATION="${LOCATION:-uaenorth}"
 RG="${RG:-rg-st10538419-cldv7112}"
+FN_RG="${FN_RG:-${RG}-fn}"
 PREFIX="${PREFIX:-st10538419}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
@@ -23,12 +24,13 @@ if [[ -z "${SQL_ADMIN_PASSWORD:-}" ]]; then
 fi
 
 az group create --name "$RG" --location "$LOCATION"
+az group create --name "$FN_RG" --location "$LOCATION"
 
 az deployment group create \
   --resource-group "$RG" \
   --template-file infra/main.bicep \
   --parameters infra/main.parameters.json \
-  --parameters namePrefix="$PREFIX" sqlAdminPassword="$SQL_ADMIN_PASSWORD"
+  --parameters namePrefix="$PREFIX" sqlAdminPassword="$SQL_ADMIN_PASSWORD" functionResourceGroup="$FN_RG"
 
 WEB_NAME="$(az deployment group show \
   --resource-group "$RG" \
@@ -66,13 +68,13 @@ az webapp deploy \
 
 dotnet publish src/ST10538419_CLDV7112_Practicium.Functions/ST10538419_CLDV7112_Practicium.Functions.csproj --configuration Release --output ./publish-functions
 az functionapp deploy \
-  --resource-group "$RG" \
+  --resource-group "$FN_RG" \
   --name "$FUNCTION_NAME" \
   --src-path ./publish-functions \
   --type zip
 
 HOST_NAME="$(az webapp show --resource-group "$RG" --name "$WEB_NAME" --query defaultHostName -o tsv)"
-FUNCTION_HOST="$(az functionapp show --resource-group "$RG" --name "$FUNCTION_NAME" --query defaultHostName -o tsv)"
+FUNCTION_HOST="$(az functionapp show --resource-group "$FN_RG" --name "$FUNCTION_NAME" --query defaultHostName -o tsv)"
 echo "Site https://${HOST_NAME}"
 echo "Health https://${HOST_NAME}/health"
 echo "Functions https://${FUNCTION_HOST}/api/health"
