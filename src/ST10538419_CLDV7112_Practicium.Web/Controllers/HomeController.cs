@@ -3,6 +3,7 @@ using ST10538419_CLDV7112_Practicium.Application.Records;
 using ST10538419_CLDV7112_Practicium.Web.Models;
 using ST10538419_CLDV7112_Practicium.Web.Options;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace ST10538419_CLDV7112_Practicium.Web.Controllers;
@@ -11,7 +12,8 @@ public class HomeController(
     IReferenceRecordService records,
     IOptions<SiteOptions> site,
     IOptions<DatabaseOptions> database,
-    IOptions<StorageOptions> storage) : Controller
+    IOptions<StorageOptions> storage,
+    IConfiguration configuration) : Controller
 {
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
@@ -24,7 +26,8 @@ public class HomeController(
             BlobConfigured = storage.Value.BlobConfigured,
             QueueConfigured = storage.Value.QueueConfigured,
             TableConfigured = storage.Value.TableConfigured,
-            FileShareConfigured = storage.Value.FileShareConfigured
+            FileShareConfigured = storage.Value.FileShareConfigured,
+            LogsConfigured = !string.IsNullOrWhiteSpace(configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"])
         };
 
         return View(model);

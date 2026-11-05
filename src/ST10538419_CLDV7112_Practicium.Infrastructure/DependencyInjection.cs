@@ -55,8 +55,16 @@ public static class DependencyInjection
 
         services.AddScoped<IReferenceRecordRepository, ReferenceRecordRepository>();
         services.AddScoped<IDatabaseStartup, DatabaseStartup>();
+        services.AddSingleton<ICloudBootstrap, CloudBootstrap>();
 
         var storage = configuration.GetSection(StorageOptions.SectionName).Get<StorageOptions>() ?? new StorageOptions();
+        if (environment.IsProduction() &&
+            (!storage.BlobConfigured || !storage.QueueConfigured || !storage.TableConfigured || !storage.FileShareConfigured))
+        {
+            throw new InvalidOperationException(
+                "Production storage connection strings are empty. Blob, queue, table, and file share must be set.");
+        }
+
         Register<IBlobStore, AzureBlobStore, UnconfiguredBlobStore>(services, storage.BlobConfigured);
         Register<IQueueStore, AzureQueueStore, UnconfiguredQueueStore>(services, storage.QueueConfigured);
         Register<ITableStore, AzureTableStore, UnconfiguredTableStore>(services, storage.TableConfigured);

@@ -10,9 +10,6 @@
     },
     "sqlAdminLogin": {
       "value": "st10538419"
-    },
-    "deployStorage": {
-      "value": false
     }
   }
 }

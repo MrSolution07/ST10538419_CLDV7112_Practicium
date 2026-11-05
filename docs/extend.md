@@ -19,6 +19,6 @@ dotnet ef migrations add AddProduct --project src/ST10538419_CLDV7112_Practicium
 9. Run `dotnet test`.
 10. Change `Site:Name` when the brief names the business. Replace the home-page foundation text with the real introduction.
 
-File upload belongs in the service: validate the file, call `IBlobStore`, save the URL on the entity. Turn storage on only then, with `DEPLOY_STORAGE=true`.
+File upload belongs in the service: validate the file, call `IBlobStore`, save the URL on the entity. The `uploads` container, `practicum-work` queue, `practicum` table, and `practicum` file share already exist after the first production start. Reuse `CloudResources` instead of inventing new names.
 
 Delete `ReferenceRecord` after the real module is in place and nothing still links to it.

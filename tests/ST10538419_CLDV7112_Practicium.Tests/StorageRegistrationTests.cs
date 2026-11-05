@@ -39,6 +39,26 @@ public class StorageRegistrationTests
         Assert.IsType<AzureBlobStore>(provider.GetRequiredService<IBlobStore>());
     }
 
+    [Fact]
+    public void Production_without_storage_throws()
+    {
+        var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            ["Database:Provider"] = "SqlServer",
+            ["ConnectionStrings:AzureSql"] = "Server=tcp:example.database.windows.net,1433;Database=db;User ID=u;Password=p;Encrypt=True;",
+            ["Storage:BlobConnectionString"] = "",
+            ["Storage:QueueConnectionString"] = "",
+            ["Storage:TableConnectionString"] = "",
+            ["Storage:FileShareConnectionString"] = ""
+        }).Build();
+        var services = new ServiceCollection();
+        var environment = new TestEnvironment { EnvironmentName = Environments.Production };
+
+        var error = Assert.Throws<InvalidOperationException>(() => services.AddInfrastructure(configuration, environment));
+
+        Assert.Contains("storage connection strings", error.Message);
+    }
+
     private static ServiceProvider BuildProvider(Dictionary<string, string?> values)
     {
         var configuration = new ConfigurationBuilder().AddInMemoryCollection(values).Build();

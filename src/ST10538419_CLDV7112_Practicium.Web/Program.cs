@@ -3,14 +3,22 @@ using ST10538419_CLDV7112_Practicium.Application.Configuration;
 using ST10538419_CLDV7112_Practicium.Application.Data;
 using ST10538419_CLDV7112_Practicium.Infrastructure;
 using ST10538419_CLDV7112_Practicium.Infrastructure.Data;
+using ST10538419_CLDV7112_Practicium.Infrastructure.Storage;
 using ST10538419_CLDV7112_Practicium.Web.Options;
 using ST10538419_CLDV7112_Practicium.Web.Security;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.IsProduction() &&
+    string.IsNullOrWhiteSpace(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]))
+{
+    throw new InvalidOperationException("APPLICATIONINSIGHTS_CONNECTION_STRING is empty. Production logs must go to Application Insights.");
+}
+
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
+builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.Configure<SiteOptions>(builder.Configuration.GetSection(SiteOptions.SectionName));
 builder.Services.AddControllersWithViews();
 builder.Services.AddHealthChecks()
@@ -22,6 +30,8 @@ await using (var scope = app.Services.CreateAsyncScope())
 {
     var startup = scope.ServiceProvider.GetRequiredService<IDatabaseStartup>();
     await startup.StartAsync(CancellationToken.None);
+    var cloud = scope.ServiceProvider.GetRequiredService<ICloudBootstrap>();
+    await cloud.StartAsync(CancellationToken.None);
 }
 
 if (app.Environment.IsDevelopment())

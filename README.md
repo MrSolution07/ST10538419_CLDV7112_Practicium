@@ -10,7 +10,9 @@ Author: Christian Bulabula Emungu.
 - EF Core
 - SQLite on this machine, Azure SQL in production
 - Azure App Service
-- Optional Azure Blob, Queue, Table, and File Share
+- Azure Storage: Blob, Queue, Table, and File Share
+- Azure Functions (queue `practicum-work`)
+- Application Insights and Log Analytics
 
 ## Run locally
 
@@ -50,6 +52,7 @@ src/ST10538419_CLDV7112_Practicium.Domain            entities
 src/ST10538419_CLDV7112_Practicium.Application       services and ports
 src/ST10538419_CLDV7112_Practicium.Infrastructure    EF Core and Azure clients
 src/ST10538419_CLDV7112_Practicium.Web               MVC site
+src/ST10538419_CLDV7112_Practicium.Functions         queue worker
 tests/ST10538419_CLDV7112_Practicium.Tests           service and persistence tests
-infra/main.bicep                    App Service and Azure SQL
+infra/main.bicep                    App Service, SQL, Storage, Functions, logs
 ```

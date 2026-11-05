@@ -30,9 +30,13 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "10.0.x"
-      - name: Publish
+      - name: Publish web
         run: dotnet publish src/ST10538419_CLDV7112_Practicium.Web/ST10538419_CLDV7112_Practicium.Web.csproj --configuration Release --output ./publish
+      - name: Publish functions
+        run: dotnet publish src/ST10538419_CLDV7112_Practicium.Functions/ST10538419_CLDV7112_Practicium.Functions.csproj --configuration Release --output ./publish-functions
       - name: Deploy zip
         run: |
           WEB_NAME="$(az deployment group show --resource-group rg-st10538419-cldv7112 --name main --query properties.outputs.webAppName.value -o tsv)"
+          FUNCTION_NAME="$(az deployment group show --resource-group rg-st10538419-cldv7112 --name main --query properties.outputs.functionAppName.value -o tsv)"
           az webapp deploy --resource-group rg-st10538419-cldv7112 --name "$WEB_NAME" --src-path ./publish --type zip
+          az functionapp deploy --resource-group rg-st10538419-cldv7112 --name "$FUNCTION_NAME" --src-path ./publish-functions --type zip

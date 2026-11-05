@@ -13,7 +13,7 @@ Resources:
 - Web app, .NET 10, HTTPS only, always on
 - Azure SQL server and Basic database
 - Firewall rule that allows Azure services
-- Optional Storage account when `deployStorage` is true
+- Storage account, Linux Consumption Function App, Log Analytics, and Application Insights are always created
 
 The script also adds a firewall rule for the current public IP, publishes the web project, and deploys the zip. The site runs migrations at startup.
 

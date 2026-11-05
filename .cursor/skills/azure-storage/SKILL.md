@@ -16,7 +16,7 @@ Inject the interface. Do not construct SDK clients in a controller.
 
 An empty setting registers `Unconfigured*Store`. Calling it throws an error that names the missing setting. That is intentional.
 
-When the brief requires one of these, set `DEPLOY_STORAGE=true` for `scripts/deploy-azure.sh`. One Storage account connection string is written into all four settings. Relational data still goes through EF Core and Azure SQL.
+`scripts/deploy-azure.sh` always creates one Storage account and writes its connection string into all four settings. Relational data still goes through EF Core and Azure SQL. On startup, `CloudBootstrap` creates container `uploads`, queue `practicum-work`, table `practicum`, and file share `practicum`. The Function App trigger listens on `practicum-work`.
 
 Blob containers are private. Do not switch them to public access. Validate file size and extension in the Application service before calling `UploadAsync`. Store the returned URL or blob name on the SQL entity.
 

@@ -31,6 +31,10 @@
         <span class="status-label">Files</span>
         <strong class="status-value @(Model.FileShareConfigured ? "ok" : "warn")">@(Model.FileShareConfigured ? "Ready" : "Off")</strong>
     </article>
+    <article class="panel">
+        <span class="status-label">Logs</span>
+        <strong class="status-value @(Model.LogsConfigured ? "ok" : "warn")">@(Model.LogsConfigured ? "Ready" : "Off")</strong>
+    </article>
 </section>
 
 <section class="panel">
@@ -39,7 +43,7 @@
         <li>Put the question in <code>docs/brief/</code>.</li>
         <li>Follow <code>AGENTS.md</code> and <code>docs/SKILLS.md</code>.</li>
         <li>Copy the Records module for each new entity.</li>
-        <li>Deploy with <code>scripts/deploy-azure.sh</code> only after the features are real.</li>
+        <li>Redeploy with <code>scripts/deploy-azure.sh</code>. Storage, Functions, and Application Insights are already on.</li>
     </ol>
     <p><a class="btn btn-accent" asp-controller="ReferenceRecords" asp-action="Index">Open the reference module</a></p>
 </section>

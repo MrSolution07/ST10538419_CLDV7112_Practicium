@@ -17,4 +17,6 @@ public sealed class HomeStatusViewModel
     public required bool TableConfigured { get; init; }
 
     public required bool FileShareConfigured { get; init; }
+
+    public required bool LogsConfigured { get; init; }
 }

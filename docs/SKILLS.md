@@ -82,7 +82,7 @@ Four ports already exist:
 - `ITableStore` for key-value rows that are not the relational model
 - `IFileShareStore` for SMB-style files
 
-Empty connection strings register an unconfigured store that throws a clear error. Set the matching `Storage:*ConnectionString` only when the brief requires that service. Deploy storage with `DEPLOY_STORAGE=true` so the credit is not spent on an unused account.
+Empty connection strings register an unconfigured store that throws a clear error. That path is for local Development only. Production requires all four storage connection strings. `scripts/deploy-azure.sh` always creates the Storage account and writes the connection string into the web app.
 
 ## azure-host
 
@@ -96,7 +96,7 @@ SQL_ADMIN_PASSWORD='a-strong-password' ./scripts/deploy-azure.sh
 
 The script creates `rg-st10538419-cldv7112`, deploys Bicep, opens the SQL firewall for the current IP, publishes the site, and prints the HTTPS URL. The app applies EF migrations on startup.
 
-GitHub deploy is `.github/workflows/deploy.yml`. It needs OIDC secrets documented in `docs/azure-hosting.md`. Do not deploy until the brief's features are in the build, so a broken site is not what the marker opens.
+GitHub deploy is `.github/workflows/deploy.yml`. It needs OIDC secrets documented in `docs/azure-hosting.md`. It publishes the web app and the Function App. Run it again after the brief's features are in the build.
 
 ## After the build
 

@@ -8,19 +8,22 @@ Region: `uaenorth`. The other allowed regions are `switzerlandnorth`, `centralin
 
 | Resource | SKU | Why |
 | --- | --- | --- |
-| App Service plan | Linux B1 | Runs .NET 10 and stays on. Cheaper than a production plan. |
+| App Service plan | Linux B1 | Runs .NET 10 and stays on. |
 | Web app | .NET 10 | The MVC site. HTTPS only. |
 | Azure SQL | Basic | Relational database for EF Core. |
-| Storage account | Standard LRS | Created only when `DEPLOY_STORAGE=true`. |
+| Storage account | Standard LRS | Blobs, queues, tables, and file shares. Always created. |
+| Function App | Linux Consumption, .NET isolated | Queue worker. Uses the same storage account. |
+| Log Analytics + Application Insights | PerGB2018 | Web and Functions logs land here, not only on the local console. |
 
 The web app receives:
 
 - `ASPNETCORE_ENVIRONMENT=Production`
 - `Database__Provider=SqlServer`
 - `ConnectionStrings__AzureSql`
-- empty storage settings, or one storage connection string when storage is enabled
+- `Storage__BlobConnectionString`, `Storage__QueueConnectionString`, `Storage__TableConnectionString`, and `Storage__FileShareConnectionString`
+- `APPLICATIONINSIGHTS_CONNECTION_STRING`
 
-The app applies EF migrations when it starts.
+The Function App receives `AzureWebJobsStorage` and the same Application Insights connection string. Startup creates the `uploads` container, the `practicum-work` queue, the `practicum` table, and the `practicum` file share. The app applies EF migrations when it starts. Production refuses to boot if SQL, storage, or Application Insights is missing.
 
 ## Deploy from the terminal
 
@@ -30,13 +33,9 @@ az account set --subscription "Azure for Students"
 SQL_ADMIN_PASSWORD='replace-with-a-strong-password' ./scripts/deploy-azure.sh
 ```
 
-Optional storage:
+If `SQL_ADMIN_PASSWORD` is unset, the script writes a generated password to `infra/.deploy.env` and reuses it on the next run. That file is gitignored.
 
-```bash
-DEPLOY_STORAGE=true SQL_ADMIN_PASSWORD='replace-with-a-strong-password' ./scripts/deploy-azure.sh
-```
-
-The script creates `rg-st10538419-cldv7112`, deploys `infra/main.bicep`, allows the current public IP through the SQL firewall, publishes the site, and prints the URL. Open `/health` after the first start. The first request can take a minute while the migration runs.
+The script creates `rg-st10538419-cldv7112`, deploys `infra/main.bicep`, allows the current public IP through the SQL firewall, publishes the site and the Function App, and prints the URLs. Open `/health` after the first start. The first request can take a minute while the migration runs.
 
 Do not commit `SQL_ADMIN_PASSWORD`.
 

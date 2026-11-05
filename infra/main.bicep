@@ -19,15 +19,15 @@ param sqlAdminLogin string = 'st10538419'
 @secure()
 param sqlAdminPassword string
 
-@description('Create a Storage account for blobs, queues, tables, and files. Leave false until the brief asks.')
-param deployStorage bool = false
-
 var suffix = uniqueString(resourceGroup().id)
 var planName = '${namePrefix}-plan'
 var webName = toLower(take('${namePrefix}${suffix}', 24))
 var sqlServerName = toLower(take('${namePrefix}${suffix}', 20))
 var databaseName = 'ST10538419_CLDV7112_Practicium'
 var storageName = toLower(take('st10538419${suffix}', 24))
+var functionName = toLower(take('fn${namePrefix}${suffix}', 24))
+var logName = toLower(take('log${suffix}', 24))
+var insightsName = toLower(take('ai${suffix}', 24))
 
 resource plan 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: planName
@@ -35,6 +35,19 @@ resource plan 'Microsoft.Web/serverfarms@2024-04-01' = {
   sku: {
     name: 'B1'
     tier: 'Basic'
+  }
+  kind: 'linux'
+  properties: {
+    reserved: true
+  }
+}
+
+resource functionPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
+  name: '${namePrefix}-fn'
+  location: location
+  sku: {
+    name: 'Y1'
+    tier: 'Dynamic'
   }
   kind: 'linux'
   properties: {
@@ -75,16 +88,45 @@ resource database 'Microsoft.Sql/servers/databases@2023-08-01-preview' = {
   }
 }
 
-module storage 'storage.bicep' = if (deployStorage) {
-  name: 'storage'
-  params: {
-    location: location
-    name: storageName
+resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = {
+  name: storageName
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  properties: {
+    minimumTlsVersion: 'TLS1_2'
+    allowBlobPublicAccess: false
+    supportsHttpsTrafficOnly: true
   }
 }
 
-var storageConnection = deployStorage ? storage!.outputs.connectionString : ''
+var storageKeys = storage.listKeys()
+var storageConnection = 'DefaultEndpointsProtocol=https;AccountName=${storage.name};AccountKey=${storageKeys.keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
 var sqlConnection = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${databaseName};User ID=${sqlAdminLogin};Password=${sqlAdminPassword};Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+
+resource workspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
+  name: logName
+  location: location
+  properties: {
+    sku: {
+      name: 'PerGB2018'
+    }
+    retentionInDays: 30
+  }
+}
+
+resource insights 'Microsoft.Insights/components@2020-02-02' = {
+  name: insightsName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: workspace.id
+    IngestionMode: 'LogAnalytics'
+  }
+}
 
 resource web 'Microsoft.Web/sites@2024-04-01' = {
   name: webName
@@ -129,6 +171,50 @@ resource web 'Microsoft.Web/sites@2024-04-01' = {
           name: 'Storage__FileShareConnectionString'
           value: storageConnection
         }
+        {
+          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+          value: insights.properties.ConnectionString
+        }
+        {
+          name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
+          value: '~3'
+        }
+      ]
+    }
+  }
+}
+
+resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
+  name: functionName
+  location: location
+  kind: 'functionapp,linux'
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    serverFarmId: functionPlan.id
+    httpsOnly: true
+    siteConfig: {
+      linuxFxVersion: 'DOTNET-ISOLATED|10.0'
+      ftpsState: 'Disabled'
+      minTlsVersion: '1.2'
+      appSettings: [
+        {
+          name: 'AzureWebJobsStorage'
+          value: storageConnection
+        }
+        {
+          name: 'FUNCTIONS_EXTENSION_VERSION'
+          value: '~4'
+        }
+        {
+          name: 'FUNCTIONS_WORKER_RUNTIME'
+          value: 'dotnet-isolated'
+        }
+        {
+          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+          value: insights.properties.ConnectionString
+        }
       ]
     }
   }
@@ -138,3 +224,6 @@ output webAppName string = web.name
 output webAppHost string = web.properties.defaultHostName
 output sqlServerName string = sqlServer.name
 output sqlServerHost string = sqlServer.properties.fullyQualifiedDomainName
+output functionAppName string = functionApp.name
+output functionAppHost string = functionApp.properties.defaultHostName
+output storageAccountName string = storage.name
