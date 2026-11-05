@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-    <ProjectReference Include="..\FinalCloudDev.Application\FinalCloudDev.Application.csproj" />
-    <ProjectReference Include="..\FinalCloudDev.Infrastructure\FinalCloudDev.Infrastructure.csproj" />
+    <ProjectReference Include="..\ST10538419_CLDV7112_Practicium.Application\ST10538419_CLDV7112_Practicium.Application.csproj" />
+    <ProjectReference Include="..\ST10538419_CLDV7112_Practicium.Infrastructure\ST10538419_CLDV7112_Practicium.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
