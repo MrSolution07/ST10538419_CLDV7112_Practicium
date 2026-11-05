@@ -86,7 +86,7 @@ Empty connection strings register an unconfigured store that throws a clear erro
 
 ## azure-host
 
-Cheap defaults are already in `infra/main.bicep`: Linux App Service B1, Azure SQL Basic, region `southafricanorth`. Storage is off unless requested.
+Cheap defaults are already in `infra/main.bicep`: Linux App Service B1, Azure SQL Basic, region `uaenorth`. Storage is off unless requested.
 
 Deploy from a machine that is already logged in with `az login`:
 
