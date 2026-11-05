@@ -1,7 +1,7 @@
-using FinalCloudDev.Application.Common;
-using FinalCloudDev.Domain.Entities;
+using ST10538419_CLDV7112_Practicium.Application.Common;
+using ST10538419_CLDV7112_Practicium.Domain.Entities;
 
-namespace FinalCloudDev.Application.Records;
+namespace ST10538419_CLDV7112_Practicium.Application.Records;
 
 public sealed class ReferenceRecordService(IReferenceRecordRepository repository) : IReferenceRecordService
 {
