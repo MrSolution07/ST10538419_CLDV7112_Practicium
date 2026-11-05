@@ -1,12 +1,12 @@
-using FinalCloudDev.Application.Configuration;
-using FinalCloudDev.Application.Data;
-using FinalCloudDev.Domain.Entities;
+using ST10538419_CLDV7112_Practicium.Application.Configuration;
+using ST10538419_CLDV7112_Practicium.Application.Data;
+using ST10538419_CLDV7112_Practicium.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace FinalCloudDev.Infrastructure.Data;
+namespace ST10538419_CLDV7112_Practicium.Infrastructure.Data;
 
 public sealed class DatabaseStartup(
     AppDbContext db,
