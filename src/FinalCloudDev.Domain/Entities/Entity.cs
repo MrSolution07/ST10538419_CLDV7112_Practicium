@@ -1,4 +1,4 @@
-namespace FinalCloudDev.Domain.Entities;
+namespace ST10538419_CLDV7112_Practicium.Domain.Entities;
 
 public abstract class Entity
 {

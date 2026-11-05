@@ -1,4 +1,4 @@
-namespace FinalCloudDev.Domain.Entities;
+namespace ST10538419_CLDV7112_Practicium.Domain.Entities;
 
 /// <summary>
 /// Sample aggregate. Copy this shape for each entity the brief requires, then remove it if the brief does not need it.
