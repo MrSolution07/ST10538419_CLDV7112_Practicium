@@ -1,0 +1,38 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Ensure resource group
+        run: az group create --name rg-final-cloud-dev --location southafricanorth
+      - uses: azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          resourceGroupName: rg-final-cloud-dev
+          deploymentName: main
+          template: infra/main.bicep
+          parameters: infra/main.parameters.json
+          additionalArguments: --parameters sqlAdminPassword=${{ secrets.SQL_ADMIN_PASSWORD }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - name: Publish
+        run: dotnet publish src/FinalCloudDev.Web/FinalCloudDev.Web.csproj --configuration Release --output ./publish
+      - name: Deploy zip
+        run: |
+          WEB_NAME="$(az deployment group show --resource-group rg-final-cloud-dev --name main --query properties.outputs.webAppName.value -o tsv)"
+          az webapp deploy --resource-group rg-final-cloud-dev --name "$WEB_NAME" --src-path ./publish --type zip
