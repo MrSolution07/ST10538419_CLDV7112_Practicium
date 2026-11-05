@@ -1,7 +1,7 @@
-using FinalCloudDev.Application.Records;
+using ST10538419_CLDV7112_Practicium.Application.Records;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FinalCloudDev.Application;
+namespace ST10538419_CLDV7112_Practicium.Application;
 
 public static class DependencyInjection
 {
