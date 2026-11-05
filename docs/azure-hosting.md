@@ -36,15 +36,15 @@ Optional storage:
 DEPLOY_STORAGE=true SQL_ADMIN_PASSWORD='replace-with-a-strong-password' ./scripts/deploy-azure.sh
 ```
 
-The script creates `rg-final-cloud-dev`, deploys `infra/main.bicep`, allows the current public IP through the SQL firewall, publishes the site, and prints the URL. Open `/health` after the first start. The first request can take a minute while the migration runs.
+The script creates `rg-st10538419-cldv7112`, deploys `infra/main.bicep`, allows the current public IP through the SQL firewall, publishes the site, and prints the URL. Open `/health` after the first start. The first request can take a minute while the migration runs.
 
 Do not commit `SQL_ADMIN_PASSWORD`.
 
 ## Local secret, when you need the real database
 
 ```bash
-dotnet user-secrets --project src/FinalCloudDev.Web set "ConnectionStrings:AzureSql" "Server=tcp:<server>.database.windows.net,1433;Initial Catalog=FinalCloudDev;User ID=fcdadmin;Password=<password>;Encrypt=True;TrustServerCertificate=False;"
-dotnet user-secrets --project src/FinalCloudDev.Web set "Database:Provider" "SqlServer"
+dotnet user-secrets --project src/ST10538419_CLDV7112_Practicium.Web set "ConnectionStrings:AzureSql" "Server=tcp:<server>.database.windows.net,1433;Initial Catalog=ST10538419_CLDV7112_Practicium;User ID=st10538419;Password=<password>;Encrypt=True;TrustServerCertificate=False;"
+dotnet user-secrets --project src/ST10538419_CLDV7112_Practicium.Web set "Database:Provider" "SqlServer"
 ```
 
 ## GitHub Action
@@ -56,7 +56,7 @@ dotnet user-secrets --project src/FinalCloudDev.Web set "Database:Provider" "Sql
 - `AZURE_SUBSCRIPTION_ID`
 - `SQL_ADMIN_PASSWORD`
 
-Create an app registration, grant it Contributor on the subscription or resource group, and add a federated credential for `repo:MrSolution07/Final_Cloud_Dev:ref:refs/heads/main`. The shell script is enough if that setup is not ready.
+Create an app registration, grant it Contributor on the subscription or resource group, and add a federated credential for `repo:MrSolution07/ST10538419_CLDV7112_Practicium:ref:refs/heads/main`. The shell script is enough if that setup is not ready.
 
 ## Evidence for the marker
 
@@ -65,7 +65,7 @@ Keep the public HTTPS URL, a screenshot of the home page showing `SqlServer`, an
 ## Tear down
 
 ```bash
-az group delete --name rg-final-cloud-dev --yes
+az group delete --name rg-st10538419-cldv7112 --yes
 ```
 
 Deleting the resource group stops the B1 and SQL charges.
