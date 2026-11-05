@@ -1,0 +1,13 @@
+---
+description: Rules for any agent building the final cloud submission on this foundation
+alwaysApply: true
+---
+
+Before changing this repository:
+
+1. Read `AGENTS.md`.
+2. Read `docs/SKILLS.md`.
+3. Read every file in `docs/brief/` when a question is present.
+4. Extend the reference-record slice. Do not replace the project layout.
+5. Never commit connection strings, passwords, publish profiles, or local `.db` files.
+6. Chat may be terse. README, Razor copy, commits, and documents a lecturer will read stay in normal English.
