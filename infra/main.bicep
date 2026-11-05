@@ -19,16 +19,13 @@ param sqlAdminLogin string = 'st10538419'
 @secure()
 param sqlAdminPassword string
 
-@description('Separate group. Linux Consumption cannot share a group that already has a B1 plan.')
-param functionResourceGroup string = 'rg-st10538419-cldv7112-fn'
-
 var suffix = uniqueString(resourceGroup().id)
 var planName = '${namePrefix}-plan'
 var webName = toLower(take('${namePrefix}${suffix}', 24))
 var sqlServerName = toLower(take('${namePrefix}${suffix}', 20))
 var databaseName = 'ST10538419_CLDV7112_Practicium'
 var storageName = toLower(take('st10538419${suffix}', 24))
-var functionName = toLower(take('fn${namePrefix}${suffix}', 24))
+var functionName = toLower(take('wk${namePrefix}${suffix}', 24))
 var logName = toLower(take('log${suffix}', 24))
 var insightsName = toLower(take('ai${suffix}', 24))
 
@@ -176,11 +173,10 @@ resource web 'Microsoft.Web/sites@2024-04-01' = {
 
 module functions 'functionapp.bicep' = {
   name: 'functions'
-  scope: resourceGroup(functionResourceGroup)
   params: {
     location: location
     functionName: functionName
-    planName: '${namePrefix}-fn'
+    serverFarmId: plan.id
     storageConnection: storageConnection
     insightsConnection: insights.properties.ConnectionString
   }

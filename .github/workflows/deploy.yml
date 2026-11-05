@@ -17,10 +17,8 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      - name: Ensure resource groups
-        run: |
-          az group create --name rg-st10538419-cldv7112 --location uaenorth
-          az group create --name rg-st10538419-cldv7112-fn --location uaenorth
+      - name: Ensure resource group
+        run: az group create --name rg-st10538419-cldv7112 --location uaenorth
       - uses: azure/arm-deploy@v2
         with:
           scope: resourcegroup
@@ -43,4 +41,4 @@ jobs:
           (cd publish && zip -qr ../web.zip .)
           (cd publish-functions && zip -qr ../fn.zip .)
           az webapp deploy --resource-group rg-st10538419-cldv7112 --name "$WEB_NAME" --src-path "$PWD/web.zip" --type zip
-          az functionapp deploy --resource-group rg-st10538419-cldv7112-fn --name "$FUNCTION_NAME" --src-path "$PWD/fn.zip" --type zip
+          az functionapp deploy --resource-group rg-st10538419-cldv7112 --name "$FUNCTION_NAME" --src-path "$PWD/fn.zip" --type zip

@@ -2,26 +2,13 @@ targetScope = 'resourceGroup'
 
 param location string
 param functionName string
-param planName string
+param serverFarmId string
 
 @secure()
 param storageConnection string
 
 @secure()
 param insightsConnection string
-
-resource functionPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
-  name: planName
-  location: location
-  sku: {
-    name: 'Y1'
-    tier: 'Dynamic'
-  }
-  kind: 'linux'
-  properties: {
-    reserved: true
-  }
-}
 
 resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
   name: functionName
@@ -31,10 +18,10 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
     type: 'SystemAssigned'
   }
   properties: {
-    serverFarmId: functionPlan.id
+    serverFarmId: serverFarmId
     httpsOnly: true
     siteConfig: {
-      linuxFxVersion: 'DOTNET-ISOLATED|10.0'
+      linuxFxVersion: 'DOTNET-ISOLATED|10'
       ftpsState: 'Disabled'
       minTlsVersion: '1.2'
       appSettings: [
@@ -53,6 +40,18 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: insightsConnection
+        }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: '1'
+        }
+        {
+          name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
+          value: 'false'
+        }
+        {
+          name: 'ENABLE_ORYX_BUILD'
+          value: 'false'
         }
       ]
     }
