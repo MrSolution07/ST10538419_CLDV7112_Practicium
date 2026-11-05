@@ -43,13 +43,7 @@ az account set --subscription "Azure for Students"
 SQL_ADMIN_PASSWORD='choose-a-strong-password' ./scripts/deploy-azure.sh
 ```
 
-The public URL is printed at the end of the script.
-
-Foundation site: https://st105384196sjsrtbxyqzvm.azurewebsites.net
-
-Function health: https://wkst105384196sjsrtbxyqzv.azurewebsites.net/api/health
-
-Put the URL here again after the real brief is deployed, if the host name changes.
+The public URL is printed at the end of the script. Run it after the brief's features pass tests. Do not leave a second resource group running.
 
 ## Layout
 
