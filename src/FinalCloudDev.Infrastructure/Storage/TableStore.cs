@@ -1,8 +1,8 @@
 using Azure.Data.Tables;
-using FinalCloudDev.Application.Configuration;
+using ST10538419_CLDV7112_Practicium.Application.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace FinalCloudDev.Infrastructure.Storage;
+namespace ST10538419_CLDV7112_Practicium.Infrastructure.Storage;
 
 public sealed class AzureTableStore(IOptions<StorageOptions> options) : ITableStore
 {
