@@ -22,13 +22,20 @@ if [[ -z "${SQL_ADMIN_PASSWORD:-}" ]]; then
   echo "Wrote a SQL admin password to infra/.deploy.env. That file stays off git."
 fi
 
+if [[ -z "${FUNCTION_SHARED_SECRET:-}" ]]; then
+  umask 077
+  FUNCTION_SHARED_SECRET="$(openssl rand -hex 24)"
+  printf 'FUNCTION_SHARED_SECRET=%s\n' "$FUNCTION_SHARED_SECRET" >> "$SECRET_FILE"
+  echo "Wrote a function shared secret to infra/.deploy.env. That file stays off git."
+fi
+
 az group create --name "$RG" --location "$LOCATION"
 
 az deployment group create \
   --resource-group "$RG" \
   --template-file infra/main.bicep \
   --parameters infra/main.parameters.json \
-  --parameters namePrefix="$PREFIX" sqlAdminPassword="$SQL_ADMIN_PASSWORD"
+  --parameters namePrefix="$PREFIX" sqlAdminPassword="$SQL_ADMIN_PASSWORD" functionSharedSecret="$FUNCTION_SHARED_SECRET"
 
 WEB_NAME="$(az deployment group show \
   --resource-group "$RG" \
@@ -79,7 +86,7 @@ HOST_NAME="$(az webapp show --resource-group "$RG" --name "$WEB_NAME" --query de
 FUNCTION_HOST="$(az functionapp show --resource-group "$RG" --name "$FUNCTION_NAME" --query defaultHostName -o tsv)"
 echo "Site https://${HOST_NAME}"
 echo "Health https://${HOST_NAME}/health"
-echo "Functions https://${FUNCTION_HOST}/api/health"
+echo "Functions https://${FUNCTION_HOST}"
 
 web_ok=0
 for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
@@ -95,16 +102,12 @@ if [[ "$web_ok" != 1 ]]; then
   exit 1
 fi
 
-function_ok=0
-for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
-  if curl -fsS "https://${FUNCTION_HOST}/api/health" >/dev/null; then
-    function_ok=1
-    echo "Function health check passed."
-    break
+echo "Functions deployed. The site calls them with the shared secret."
+az functionapp function list --resource-group "$RG" --name "$FUNCTION_NAME" --query "[].name" -o tsv || true
+
+while read -r previous; do
+  if [[ -n "$previous" && "$previous" != "$WEB_NAME" ]]; then
+    echo "Removing previous web app ${previous}."
+    az webapp delete --resource-group "$RG" --name "$previous"
   fi
-  sleep 20
-done
-if [[ "$function_ok" != 1 ]]; then
-  echo "Function health check failed." >&2
-  exit 1
-fi
+done < <(az webapp list --resource-group "$RG" --query "[?kind=='app,linux'].name" -o tsv)

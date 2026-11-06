@@ -8,6 +8,12 @@ param serverFarmId string
 param storageConnection string
 
 @secure()
+param sqlConnection string
+
+@secure()
+param functionSharedSecret string
+
+@secure()
 param insightsConnection string
 
 resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
@@ -22,12 +28,45 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
     httpsOnly: true
     siteConfig: {
       linuxFxVersion: 'DOTNET-ISOLATED|10'
+      alwaysOn: true
       ftpsState: 'Disabled'
       minTlsVersion: '1.2'
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
           value: storageConnection
+        }
+        {
+          name: 'Database__Provider'
+          value: 'SqlServer'
+        }
+        {
+          name: 'ConnectionStrings__AzureSql'
+          value: sqlConnection
+        }
+        {
+          name: 'Storage__BlobConnectionString'
+          value: storageConnection
+        }
+        {
+          name: 'Storage__QueueConnectionString'
+          value: storageConnection
+        }
+        {
+          name: 'Storage__TableConnectionString'
+          value: storageConnection
+        }
+        {
+          name: 'Storage__FileShareConnectionString'
+          value: storageConnection
+        }
+        {
+          name: 'Functions__SharedSecret'
+          value: functionSharedSecret
+        }
+        {
+          name: 'AZURE_FUNCTIONS_ENVIRONMENT'
+          value: 'Production'
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'

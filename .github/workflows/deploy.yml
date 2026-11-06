@@ -19,6 +19,8 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Ensure resource group
         run: az group create --name rg-st10538419-cldv7112 --location uaenorth
+      - name: Create function secret
+        run: echo "FUNCTION_SHARED_SECRET=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
       - uses: azure/arm-deploy@v2
         with:
           scope: resourcegroup
@@ -26,7 +28,7 @@ jobs:
           deploymentName: main
           template: infra/main.bicep
           parameters: infra/main.parameters.json
-          additionalArguments: --parameters sqlAdminPassword=${{ secrets.SQL_ADMIN_PASSWORD }}
+          additionalArguments: --parameters sqlAdminPassword=${{ secrets.SQL_ADMIN_PASSWORD }} functionSharedSecret=${{ env.FUNCTION_SHARED_SECRET }}
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "10.0.x"

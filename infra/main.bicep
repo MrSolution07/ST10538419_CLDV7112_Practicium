@@ -19,9 +19,14 @@ param sqlAdminLogin string = 'st10538419'
 @secure()
 param sqlAdminPassword string
 
+@description('Shared secret the MVC app sends to the HTTP functions. Not committed.')
+@secure()
+@minLength(16)
+param functionSharedSecret string
+
 var suffix = uniqueString(resourceGroup().id)
 var planName = '${namePrefix}-plan'
-var webName = toLower(take('${namePrefix}${suffix}', 24))
+var webName = 'st10538419'
 var sqlServerName = toLower(take('${namePrefix}${suffix}', 20))
 var databaseName = 'ST10538419_CLDV7112_Practicium'
 var storageName = toLower(take('st10538419${suffix}', 24))
@@ -35,6 +40,7 @@ resource plan 'Microsoft.Web/serverfarms@2024-04-01' = {
   sku: {
     name: 'B1'
     tier: 'Basic'
+    capacity: 1
   }
   kind: 'linux'
   properties: {
@@ -166,6 +172,14 @@ resource web 'Microsoft.Web/sites@2024-04-01' = {
           name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
           value: '~3'
         }
+        {
+          name: 'Functions__BaseUrl'
+          value: 'https://${functionName}.azurewebsites.net'
+        }
+        {
+          name: 'Functions__SharedSecret'
+          value: functionSharedSecret
+        }
       ]
     }
   }
@@ -178,6 +192,8 @@ module functions 'functionapp.bicep' = {
     functionName: functionName
     serverFarmId: plan.id
     storageConnection: storageConnection
+    sqlConnection: sqlConnection
+    functionSharedSecret: functionSharedSecret
     insightsConnection: insights.properties.ConnectionString
   }
 }
