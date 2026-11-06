@@ -1,18 +1,18 @@
-# ST10538419 CLDV7112 Practicium
+# ArgiStream IoT
 
-ASP.NET Core MVC foundation for the final cloud submission. The assignment question is not in the repo yet. Drop it in `docs/brief/` and follow `AGENTS.md`.
+Management site for ArgiStream IoT, student ST10538419. Farmers, agronomists, and admins sign in to a role dashboard. Soil readings, irrigation commands, and environmental logs live in Azure Table Storage. Drone images live in a private blob container. Device status lives in Azure SQL.
 
-Author: Christian Bulabula Emungu.
+Public host, once deployed: `https://st10538419.azurewebsites.net`
 
-## Stack
+## Sign in
 
-- .NET 10 MVC
-- EF Core
-- SQLite on this machine, Azure SQL in production
-- Azure App Service
-- Azure Storage: Blob, Queue, Table, and File Share
-- Azure Functions (queue `practicum-work`)
-- Application Insights and Log Analytics
+The sign-in page lists these tester accounts. The password in SQL is a hash.
+
+| Username | Password | Role | Dashboard |
+| --- | --- | --- | --- |
+| farmer | Farmer-field-1 | Farmer | Field dashboard, telemetry, irrigation, drone upload |
+| agronomist | Agronomist-field-1 | Agronomist | Environmental logs, devices, drone gallery |
+| admin | Admin-field-1 | Admin | Accounts, devices, hosting status |
 
 ## Run locally
 
@@ -22,37 +22,43 @@ dotnet test
 dotnet run --project src/ST10538419_CLDV7112_Practicium.Web
 ```
 
-Open the HTTPS URL printed by the CLI. The home page shows the database provider and a sample record.
+Local data is SQLite at `src/ST10538419_CLDV7112_Practicium.Web/App_Data/local.db`. That file is gitignored. If an older file is still there, delete it so the account and device tables are created again.
 
-## Where an agent should look
+Telemetry and image upload stay off until `Functions:BaseUrl`, `Functions:SharedSecret`, and the storage connection strings are set. The dashboards say so in plain text.
 
-| Task | File |
-| --- | --- |
-| Order of work | `AGENTS.md` |
-| All project skills | `docs/SKILLS.md` |
-| Cursor skills | `.cursor/skills/` |
-| New entity | `docs/extend.md` |
-| Deploy | `docs/azure-hosting.md` |
+## Azure
 
-## Deploy
-
-Use the Azure for Students subscription. The template stays on a B1 plan and Basic SQL so the credit lasts.
+One resource group, `rg-st10538419-cldv7112`, in `uaenorth`. The plan is Linux **B1** with one worker. Linux App Service has no Free tier, so B1 is the cheapest plan that stays online. SQL stays on Basic. Storage stays on Standard LRS.
 
 ```bash
 az account set --subscription "Azure for Students"
-SQL_ADMIN_PASSWORD='choose-a-strong-password' ./scripts/deploy-azure.sh
+./scripts/deploy-azure.sh
 ```
 
-The public URL is printed at the end of the script. Run it after the brief's features pass tests. Do not leave a second resource group running.
+The script keeps the SQL password and the function shared secret in `infra/.deploy.env`. That file is gitignored. Delete the resource group when the submission no longer needs to stay online:
 
-## Layout
-
-```text
-src/ST10538419_CLDV7112_Practicium.Domain            entities
-src/ST10538419_CLDV7112_Practicium.Application       services and ports
-src/ST10538419_CLDV7112_Practicium.Infrastructure    EF Core and Azure clients
-src/ST10538419_CLDV7112_Practicium.Web               MVC site
-src/ST10538419_CLDV7112_Practicium.Functions         queue worker
-tests/ST10538419_CLDV7112_Practicium.Tests           service and persistence tests
-infra/main.bicep                    App Service, SQL, Storage, Functions, logs
+```bash
+az group delete --name rg-st10538419-cldv7112 --yes
 ```
+
+## Load test
+
+`scripts/load-test.sh` sends concurrent requests to `/health` and `/Account/Login` for 12 minutes. Azure autoscale uses a 5 minute window, so a shorter run does not move the instance count.
+
+```bash
+chmod +x scripts/load-test.sh
+./scripts/load-test.sh https://st10538419.azurewebsites.net
+```
+
+### Result
+
+Ran on 6 November 2026 against `https://st10538419.azurewebsites.net` for 721 seconds, 20 workers, hitting `/health` and `/Account/Login`.
+
+- Requests: 20520
+- Success: 20518
+- Failed: 2 (both were connection timeouts)
+- CPU: plan average peaked at 80.5% in the minute of 08:33 UTC, above the 20% scale-out rule
+- Instance count during that run: the plan was S1 with 2 workers. It is now B1 with 1 worker so the credit lasts.
+- Met the bar: the site stayed up under the load. Two requests timed out.
+
+The autoscale rule was removed after that run. B1 cannot autoscale, and a scale-out rule would put the expensive plan back.

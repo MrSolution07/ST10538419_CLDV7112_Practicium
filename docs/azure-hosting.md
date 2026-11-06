@@ -8,11 +8,11 @@ Region: `uaenorth`. The other allowed regions are `switzerlandnorth`, `centralin
 
 | Resource | SKU | Why |
 | --- | --- | --- |
-| App Service plan | Linux B1 | Runs .NET 10 and stays on. |
-| Web app | .NET 10 | The MVC site. HTTPS only. |
-| Azure SQL | Basic | Relational database for EF Core. |
-| Storage account | Standard LRS | Blobs, queues, tables, and file shares. Always created. |
-| Function App | .NET isolated, same Linux B1 plan | Queue worker. Consumption Linux would not start in this region, so it shares the site plan. |
+| App Service plan | Linux B1 | Cheapest Linux plan. Free and Shared tiers are Windows-only, so this site cannot sit on F1. |
+| Web app | .NET 10, name `st10538419` | The MVC site. Host `st10538419.azurewebsites.net`. HTTPS only. |
+| Azure SQL | Basic | Users and the device registry. |
+| Storage account | Standard LRS | Blobs, queues, tables, and the existing file share port. |
+| Function App | .NET isolated, same B1 plan | Four functions. Consumption Linux would not start in this region, so it shares the site plan. |
 | Log Analytics + Application Insights | PerGB2018 | Web and Functions logs land here, not only on the local console. |
 
 The web app receives:
@@ -23,7 +23,7 @@ The web app receives:
 - `Storage__BlobConnectionString`, `Storage__QueueConnectionString`, `Storage__TableConnectionString`, and `Storage__FileShareConnectionString`
 - `APPLICATIONINSIGHTS_CONNECTION_STRING`
 
-The Function App receives `AzureWebJobsStorage` and the same Application Insights connection string. Startup creates the `uploads` container, the `practicum-work` queue, the `practicum` table, and the `practicum` file share. The app applies EF migrations when it starts. Production refuses to boot if SQL, storage, or Application Insights is missing.
+The Function App receives `AzureWebJobsStorage`, the SQL connection, the storage connection strings, and the same Application Insights connection string. The web app and the Function App share `Functions__SharedSecret`. Startup creates container `drone-images`, queue `irrigation-commands`, tables `sensorreadings`, `irrigationcommands`, `environmentallogs`, and `imageaudits`, and file share `practicum`. The app applies EF migrations when it starts. Production refuses to boot if SQL, storage, or Application Insights is missing.
 
 ## Deploy from the terminal
 
