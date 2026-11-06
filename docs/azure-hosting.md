@@ -12,8 +12,8 @@ Region: `uaenorth`. The other allowed regions are `switzerlandnorth`, `centralin
 | Web app | .NET 10, name `st10538419` | The MVC site. Host `st10538419.azurewebsites.net`. HTTPS only. |
 | Azure SQL | Basic | Users and the device registry. |
 | Storage account | Standard LRS | Blobs, queues, tables, and the existing file share port. |
-| Function App | .NET isolated, same B1 plan | Four functions. Consumption Linux would not start in this region, so it shares the site plan. |
-| Log Analytics + Application Insights | PerGB2018 | Web and Functions logs land here, not only on the local console. |
+| Function App | .NET isolated, name `st10538419-functions`, same B1 plan | Four functions. Consumption Linux would not start in this region, so it shares the site plan. |
+| Log Analytics + Application Insights | PerGB2018, component name `st10538419-insights` | Web and Functions logs land here, not only on the local console. |
 
 The web app receives:
 

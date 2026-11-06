@@ -30,9 +30,9 @@ var webName = 'st10538419'
 var sqlServerName = toLower(take('${namePrefix}${suffix}', 20))
 var databaseName = 'ST10538419_CLDV7112_Practicium'
 var storageName = toLower(take('st10538419${suffix}', 24))
-var functionName = toLower(take('wk${namePrefix}${suffix}', 24))
+var functionName = '${namePrefix}-functions'
 var logName = toLower(take('log${suffix}', 24))
-var insightsName = toLower(take('ai${suffix}', 24))
+var insightsName = '${namePrefix}-insights'
 
 resource plan 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: planName
