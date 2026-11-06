@@ -1,0 +1,22 @@
+@model Device
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="toolbar">
+    <div>
+        <h1>@Model.Name</h1>
+        <p class="lede">Field @Model.FieldName. Status is the word below, not a colour alone.</p>
+    </div>
+    @if (User.IsInRole(UserRoles.Admin))
+    {
+        <a class="btn btn-accent" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    }
+</div>
+
+<section class="panel">
+    <p><span class="status-label">Field</span> <strong>@Model.FieldName</strong></p>
+    <p><span class="status-label">Operational status</span> <strong>@Model.OperationalStatus</strong></p>
+    <p><span class="status-label">Updated</span> <strong class="nums">@Model.UpdatedAt.ToString("dd MMM yyyy HH:mm") UTC</strong></p>
+    <p><a asp-action="Index">Back to devices</a></p>
+</section>

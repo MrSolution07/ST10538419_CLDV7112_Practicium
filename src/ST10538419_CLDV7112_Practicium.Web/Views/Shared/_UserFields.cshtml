@@ -1,0 +1,21 @@
+@model UserAccountForm
+
+<div class="mb-3">
+    <label asp-for="Username"></label>
+    <input asp-for="Username" class="form-control" autocomplete="username" />
+    <span asp-validation-for="Username" class="field-error"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Password"></label>
+    <input asp-for="Password" class="form-control" autocomplete="new-password" />
+    <span asp-validation-for="Password" class="field-error"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Role"></label>
+    <select asp-for="Role" class="form-control">
+        <option value="@UserRoles.Farmer">Farmer</option>
+        <option value="@UserRoles.Agronomist">Agronomist</option>
+        <option value="@UserRoles.Admin">Admin</option>
+    </select>
+    <span asp-validation-for="Role" class="field-error"></span>
+</div>

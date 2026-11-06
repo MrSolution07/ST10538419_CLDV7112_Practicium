@@ -4,8 +4,10 @@ using ST10538419_CLDV7112_Practicium.Application.Data;
 using ST10538419_CLDV7112_Practicium.Infrastructure;
 using ST10538419_CLDV7112_Practicium.Infrastructure.Data;
 using ST10538419_CLDV7112_Practicium.Infrastructure.Storage;
+using ST10538419_CLDV7112_Practicium.Web;
 using ST10538419_CLDV7112_Practicium.Web.Options;
 using ST10538419_CLDV7112_Practicium.Web.Security;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +20,21 @@ if (builder.Environment.IsProduction() &&
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
-builder.Services.AddApplicationInsightsTelemetry();
+if (!string.IsNullOrWhiteSpace(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]))
+{
+    builder.Services.AddApplicationInsightsTelemetry();
+}
 builder.Services.Configure<SiteOptions>(builder.Configuration.GetSection(SiteOptions.SectionName));
+builder.Services.AddSingleton<HostingStatusReader>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/Denied";
+        options.Cookie.Name = "ArgiStream.Auth";
+        options.SlidingExpiration = true;
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    });
 builder.Services.AddControllersWithViews();
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<AppDbContext>(name: "database");
@@ -47,6 +62,7 @@ else
 app.UseMiddleware<SecurityHeadersMiddleware>();
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
 app.MapHealthChecks("/health", new HealthCheckOptions

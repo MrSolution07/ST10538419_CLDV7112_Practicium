@@ -1,0 +1,34 @@
+@model OperationsViewModel
+@{
+    ViewData["Title"] = "Operations";
+}
+
+<div class="toolbar">
+    <div>
+        <h1>Operations</h1>
+        <p class="lede">Accounts, the device registry, and the live connection to Azure.</p>
+    </div>
+    <div class="actions">
+        <a class="btn btn-accent" asp-controller="Users" asp-action="Create">New account</a>
+        <a class="btn btn-line" asp-controller="Devices" asp-action="Create">New device</a>
+    </div>
+</div>
+
+<partial name="_HostingCard" model="Model.Hosting" />
+
+<section class="grid">
+    <article class="panel stat">
+        <span class="status-label">Accounts</span>
+        <strong class="status-value nums">@Model.AccountCount</strong>
+    </article>
+    <article class="panel stat">
+        <span class="status-label">Devices</span>
+        <strong class="status-value nums">@Model.DeviceCount</strong>
+    </article>
+</section>
+
+<section class="panel">
+    <h2>What this site runs</h2>
+    <p>Four functions handle the stream. A blob trigger writes an image audit. A GET function returns telemetry. A POST function stores an irrigation command and queues it. A queue function updates the device status in SQL.</p>
+    <p><a asp-controller="Users" asp-action="Index">Open accounts</a> or <a asp-controller="Devices" asp-action="Index">open devices</a>.</p>
+</section>

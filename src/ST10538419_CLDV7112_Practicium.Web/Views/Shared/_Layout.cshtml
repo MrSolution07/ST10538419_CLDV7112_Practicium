@@ -1,38 +1,103 @@
 ﻿@inject Microsoft.Extensions.Options.IOptions<SiteOptions> SiteOptions
+@{
+    var current = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    string Active(string controller) => string.Equals(current, controller, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    var pageTitle = ViewData["Title"]?.ToString();
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - @SiteOptions.Value.Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ST10538419_CLDV7112_Practicium.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-        <div class="shell header-row">
-            <a class="brand" asp-controller="Home" asp-action="Index">@SiteOptions.Value.Name</a>
+    <aside class="sidebar">
+        <a class="brand" asp-controller="Home" asp-action="Index">
+            <svg class="brand-mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <path fill="currentColor" d="M12 2c2.2 3.6 2.2 6.4 0 9.2 3.4-.8 6.2-.6 8.8 1.2-3.6.6-6.2 3.2-7.2 7.6C12.4 16.2 10 13.6 6.8 12.4 9.6 10.6 12 10.4 14.6 9.2 12.8 6.6 12.6 4.4 12 2z" />
+            </svg>
+            @SiteOptions.Value.Name
+        </a>
+        <nav id="site-nav" class="collapse site-nav" aria-label="Primary">
+            @if (User.IsInRole(UserRoles.Farmer))
+            {
+                <a class="@Active("Dashboard")" asp-controller="Dashboard" asp-action="Index">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.4-7-10a7 7 0 0 1 14 0c0 5.6-7 10-7 10z"/><path d="M12 21V11"/></svg>
+                    Field
+                </a>
+            }
+            @if (User.IsInRole(UserRoles.Agronomist))
+            {
+                <a class="@Active("Monitor")" asp-controller="Monitor" asp-action="Index">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+                    Monitoring
+                </a>
+            }
+            @if (User.IsInRole(UserRoles.Admin))
+            {
+                <a class="@Active("Operations")" asp-controller="Operations" asp-action="Index">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM13 13h7v7h-7zM4 13h7v7H4z"/></svg>
+                    Operations
+                </a>
+                <a class="@Active("Users")" asp-controller="Users" asp-action="Index">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Accounts
+                </a>
+            }
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a class="@Active("Devices")" asp-controller="Devices" asp-action="Index">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>
+                    Devices
+                </a>
+            }
+            <a class="@Active("Home")" asp-controller="Home" asp-action="Privacy">
+                <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Privacy
+            </a>
+            @if (User.Identity?.IsAuthenticated != true)
+            {
+                <a class="@Active("Account")" asp-controller="Account" asp-action="Login">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+                    Sign in
+                </a>
+            }
+        </nav>
+    </aside>
+    <div class="app-column">
+        <header class="topbar">
             <button class="nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#site-nav" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu">
                 Menu
             </button>
-            <nav id="site-nav" class="collapse site-nav">
-                <a asp-controller="Home" asp-action="Index">Home</a>
-                <a asp-controller="ReferenceRecords" asp-action="Index">Records</a>
-                <a asp-controller="Home" asp-action="Privacy">Privacy</a>
-            </nav>
-        </div>
-    </header>
-    <main id="main" class="shell page">
-        @RenderBody()
-    </main>
-    <footer class="site-footer">
-        <div class="shell">
+            <a class="topbar-brand" asp-controller="Home" asp-action="Index">@SiteOptions.Value.Name</a>
+            <p class="topbar-title">@(string.IsNullOrWhiteSpace(pageTitle) ? SiteOptions.Value.Name : pageTitle)</p>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <form class="sign-out" asp-controller="Account" asp-action="Logout" method="post">
+                    <button class="btn btn-quiet" type="submit">Sign out</button>
+                </form>
+            }
+        </header>
+        <main id="main" class="page">
+            @if (TempData["Notice"] is string notice)
+            {
+                <p class="notice" role="status">@notice</p>
+            }
+            @RenderBody()
+        </main>
+        <footer class="site-footer">
             <span>@SiteOptions.Value.Name</span>
             <span>@DateTime.UtcNow.Year</span>
-        </div>
-    </footer>
+        </footer>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

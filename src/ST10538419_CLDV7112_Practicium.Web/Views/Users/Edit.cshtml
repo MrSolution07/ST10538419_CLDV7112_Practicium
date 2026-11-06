@@ -1,0 +1,20 @@
+@model UserAccountForm
+@{
+    ViewData["Title"] = "Edit account";
+}
+
+<h1>Edit account</h1>
+<p class="lede">Leave the password blank to keep the current one.</p>
+
+<form asp-action="Edit" method="post" class="panel" novalidate>
+    <partial name="_FormErrors" />
+    <partial name="_UserFields" model="Model" />
+    <div class="actions">
+        <button class="btn btn-accent" type="submit">Save changes</button>
+        <a asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

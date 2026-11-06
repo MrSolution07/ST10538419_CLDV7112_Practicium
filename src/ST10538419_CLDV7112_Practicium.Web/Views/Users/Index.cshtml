@@ -1,0 +1,48 @@
+@model IReadOnlyList<UserAccount>
+@{
+    ViewData["Title"] = "Accounts";
+    var search = ViewData["Search"] as string;
+}
+
+<div class="toolbar">
+    <div>
+        <h1>Accounts</h1>
+        <p class="lede">Usernames, roles, and stored credentials for Farmer, Agronomist, and Admin.</p>
+    </div>
+    <a class="btn btn-accent" asp-action="Create">New account</a>
+</div>
+
+<form class="search-form" method="get" role="search">
+    <label class="visually-hidden" for="q">Search accounts</label>
+    <input class="form-control" id="q" name="q" value="@search" placeholder="Search username or role" />
+    <button class="btn btn-line" type="submit">Search</button>
+</form>
+
+<div class="panel table-wrap">
+    @if (Model.Count == 0)
+    {
+        <p class="empty">No accounts match that search. Clear the search or create an account.</p>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var account in Model)
+            {
+                <tr>
+                    <td><a asp-action="Details" asp-route-id="@account.Id">@account.Username</a></td>
+                    <td>@account.Role</td>
+                    <td class="nums">@account.UpdatedAt.ToString("dd MMM yyyy HH:mm") UTC</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>

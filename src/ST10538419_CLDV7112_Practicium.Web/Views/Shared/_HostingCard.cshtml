@@ -1,0 +1,46 @@
+@model HostingStatusViewModel
+
+<section class="grid" aria-label="Hosting status">
+    <article class="panel stat">
+        <span class="stat-icon" aria-hidden="true">
+            <svg class="nav-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6" rx="1"/><rect x="4" y="14" width="16" height="6" rx="1"/><path d="M8 7h.01M8 17h.01"/></svg>
+        </span>
+        <span class="status-label">Host</span>
+        <strong class="status-value">@Model.Host</strong>
+    </article>
+    <article class="panel stat">
+        <span class="stat-icon" aria-hidden="true">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 3c4.4 0 8 1.1 8 2.5S16.4 8 12 8 4 6.9 4 5.5 7.6 3 12 3z"/><path d="M4 5.5v13C4 20 7.6 21 12 21s8-1 8-2.5v-13"/><path d="M4 12c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5"/></svg>
+        </span>
+        <span class="status-label">Database</span>
+        <strong class="status-value">@Model.DatabaseProvider</strong>
+    </article>
+    <article class="panel stat">
+        <span class="stat-icon" aria-hidden="true">
+            <svg class="nav-icon" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1"/><path d="M4 15l4-4 4 4 3-3 5 5"/><path d="M9 9h.01"/></svg>
+        </span>
+        <span class="status-label">Blob</span>
+        <strong class="status-value">@(Model.BlobReady ? "Ready" : "Off")</strong>
+    </article>
+    <article class="panel stat">
+        <span class="stat-icon" aria-hidden="true">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        </span>
+        <span class="status-label">Queue</span>
+        <strong class="status-value">@(Model.QueueReady ? "Ready" : "Off")</strong>
+    </article>
+    <article class="panel stat">
+        <span class="stat-icon" aria-hidden="true">
+            <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+        </span>
+        <span class="status-label">Table</span>
+        <strong class="status-value">@(Model.TableReady ? "Ready" : "Off")</strong>
+    </article>
+    <article class="panel stat">
+        <span class="stat-icon" aria-hidden="true">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
+        </span>
+        <span class="status-label">Logs</span>
+        <strong class="status-value">@(Model.LogsReady ? "Ready" : "Off")</strong>
+    </article>
+</section>

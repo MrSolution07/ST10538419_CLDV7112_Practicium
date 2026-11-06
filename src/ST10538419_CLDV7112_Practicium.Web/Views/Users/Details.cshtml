@@ -1,0 +1,19 @@
+@model UserAccount
+@{
+    ViewData["Title"] = Model.Username;
+}
+
+<div class="toolbar">
+    <div>
+        <h1>@Model.Username</h1>
+        <p class="lede">Role: @Model.Role. The password is stored as a hash and is not shown here.</p>
+    </div>
+    <a class="btn btn-accent" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+</div>
+
+<section class="panel">
+    <p><span class="status-label">Username</span> <strong>@Model.Username</strong></p>
+    <p><span class="status-label">Role</span> <strong>@Model.Role</strong></p>
+    <p><span class="status-label">Updated</span> <strong class="nums">@Model.UpdatedAt.ToString("dd MMM yyyy HH:mm") UTC</strong></p>
+    <p><a asp-action="Index">Back to accounts</a></p>
+</section>

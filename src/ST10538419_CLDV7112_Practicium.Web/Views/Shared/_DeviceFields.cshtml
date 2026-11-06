@@ -1,0 +1,21 @@
+@model DeviceForm
+
+<div class="mb-3">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="field-error"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="FieldName"></label>
+    <input asp-for="FieldName" class="form-control" />
+    <span asp-validation-for="FieldName" class="field-error"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="OperationalStatus"></label>
+    <select asp-for="OperationalStatus" class="form-control">
+        <option value="@DeviceStatuses.Idle">Idle</option>
+        <option value="@DeviceStatuses.Irrigating">Irrigating</option>
+        <option value="@DeviceStatuses.NeedsAttention">Needs attention</option>
+    </select>
+    <span asp-validation-for="OperationalStatus" class="field-error"></span>
+</div>

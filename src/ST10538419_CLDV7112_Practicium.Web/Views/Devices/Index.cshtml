@@ -1,0 +1,52 @@
+@model IReadOnlyList<Device>
+@{
+    ViewData["Title"] = "Devices";
+    var search = ViewData["Search"] as string;
+    var isAdmin = User.IsInRole(UserRoles.Admin);
+}
+
+<div class="toolbar">
+    <div>
+        <h1>Devices</h1>
+        <p class="lede">Master registry. The queue function updates operational status after an irrigation command.</p>
+    </div>
+    @if (isAdmin)
+    {
+        <a class="btn btn-accent" asp-action="Create">New device</a>
+    }
+</div>
+
+<form class="search-form" method="get" role="search">
+    <label class="visually-hidden" for="q">Search devices</label>
+    <input class="form-control" id="q" name="q" value="@search" placeholder="Search name or field" />
+    <button class="btn btn-line" type="submit">Search</button>
+</form>
+
+<div class="panel table-wrap">
+    @if (Model.Count == 0)
+    {
+        <p class="empty">No devices yet. @(isAdmin ? "Register the first one." : "Ask an admin to register one.")</p>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Field</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var device in Model)
+            {
+                <tr>
+                    <td><a asp-action="Details" asp-route-id="@device.Id">@device.Name</a></td>
+                    <td>@device.FieldName</td>
+                    <td>@device.OperationalStatus</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>

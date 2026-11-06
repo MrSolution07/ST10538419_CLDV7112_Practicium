@@ -1,36 +1,18 @@
-using ST10538419_CLDV7112_Practicium.Application.Configuration;
-using ST10538419_CLDV7112_Practicium.Application.Records;
 using ST10538419_CLDV7112_Practicium.Web.Models;
-using ST10538419_CLDV7112_Practicium.Web.Options;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace ST10538419_CLDV7112_Practicium.Web.Controllers;
 
-public class HomeController(
-    IReferenceRecordService records,
-    IOptions<SiteOptions> site,
-    IOptions<DatabaseOptions> database,
-    IOptions<StorageOptions> storage,
-    IConfiguration configuration) : Controller
+public class HomeController : Controller
 {
-    public async Task<IActionResult> Index(CancellationToken cancellationToken)
+    public IActionResult Index()
     {
-        var model = new HomeStatusViewModel
+        if (User.Identity?.IsAuthenticated == true)
         {
-            SiteName = site.Value.Name,
-            Tagline = site.Value.Tagline,
-            DatabaseProvider = database.Value.Provider,
-            ActiveRecords = await records.CountActiveAsync(cancellationToken),
-            BlobConfigured = storage.Value.BlobConfigured,
-            QueueConfigured = storage.Value.QueueConfigured,
-            TableConfigured = storage.Value.TableConfigured,
-            FileShareConfigured = storage.Value.FileShareConfigured,
-            LogsConfigured = !string.IsNullOrWhiteSpace(configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"])
-        };
+            return RedirectToAction("Index", RoleHome.ControllerFor(User));
+        }
 
-        return View(model);
+        return RedirectToAction("Login", "Account");
     }
 
     public IActionResult Privacy() => View();

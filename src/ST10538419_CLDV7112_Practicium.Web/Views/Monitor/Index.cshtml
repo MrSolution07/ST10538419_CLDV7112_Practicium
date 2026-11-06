@@ -1,0 +1,79 @@
+@model MonitorViewModel
+@{
+    ViewData["Title"] = "Field monitoring";
+}
+
+<div class="toolbar">
+    <div>
+        <h1>Field monitoring</h1>
+        <p class="lede">Environmental logs, device status, and drone imagery for the agronomist.</p>
+    </div>
+</div>
+
+<partial name="_HostingCard" model="Model.Hosting" />
+
+<section class="split">
+    <article class="panel">
+        <h2>Environmental logs</h2>
+        @if (!Model.Logs.Configured)
+        {
+            <p class="empty">@Model.Logs.Message</p>
+        }
+        else if (Model.Logs.Logs.Count == 0)
+        {
+            <p class="empty">No environmental logs yet.</p>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Field</th>
+                            <th scope="col">Measure</th>
+                            <th scope="col">Value</th>
+                            <th scope="col">Recorded</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var log in Model.Logs.Logs)
+                    {
+                        <tr>
+                            <td>@log.FieldName</td>
+                            <td>@log.Measure</td>
+                            <td class="nums">@log.Value</td>
+                            <td class="nums">@log.RecordedAt</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </article>
+    <article class="panel">
+        <h2>Devices</h2>
+        @if (Model.Devices.Count == 0)
+        {
+            <p class="empty">No devices in the master registry yet.</p>
+        }
+        else
+        {
+            <ul class="plain-list">
+                @foreach (var device in Model.Devices)
+                {
+                    <li>
+                        <a asp-controller="Devices" asp-action="Details" asp-route-id="@device.Id">@device.Name</a>
+                        <span>@device.FieldName</span>
+                        <span>@device.OperationalStatus</span>
+                    </li>
+                }
+            </ul>
+        }
+    </article>
+</section>
+
+<section class="panel">
+    <h2>Drone images</h2>
+    <partial name="_Gallery" model="Model.Gallery" />
+    <partial name="_UploadForm" model="@("Monitor")" />
+</section>

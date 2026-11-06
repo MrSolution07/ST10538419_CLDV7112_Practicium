@@ -1,0 +1,20 @@
+@model DeviceForm
+@{
+    ViewData["Title"] = "New device";
+}
+
+<h1>New device</h1>
+<p class="lede">Name the device and the field it serves. Status starts as Idle unless you choose another.</p>
+
+<form asp-action="Create" method="post" class="panel" novalidate>
+    <partial name="_FormErrors" />
+    <partial name="_DeviceFields" model="Model" />
+    <div class="actions">
+        <button class="btn btn-accent" type="submit">Save device</button>
+        <a asp-action="Index">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

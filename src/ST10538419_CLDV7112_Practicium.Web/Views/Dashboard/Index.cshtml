@@ -1,0 +1,113 @@
+@model FarmerDashboardViewModel
+@{
+    ViewData["Title"] = "Field dashboard";
+}
+
+<div class="toolbar">
+    <div>
+        <h1>Field dashboard</h1>
+        <p class="lede">Latest soil readings, irrigation, and a drone image for the field.</p>
+    </div>
+</div>
+
+<section class="grid" aria-label="Field summary">
+    <article class="panel stat">
+        <span class="stat-icon" aria-hidden="true">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 2.5s6 6.4 6 10.5a6 6 0 0 1-12 0c0-4.1 6-10.5 6-10.5z"/></svg>
+        </span>
+        <span class="status-label">Readings</span>
+        <strong class="status-value nums">@Model.Readings.Count</strong>
+    </article>
+    <article class="panel stat">
+        <span class="stat-icon" aria-hidden="true">
+            <svg class="nav-icon" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>
+        </span>
+        <span class="status-label">Devices</span>
+        <strong class="status-value nums">@Model.Devices.Count</strong>
+    </article>
+    <article class="panel stat">
+        <span class="stat-icon" aria-hidden="true">
+            <svg class="nav-icon" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1"/><path d="M4 15l4-4 4 4 3-3 5 5"/><path d="M9 9h.01"/></svg>
+        </span>
+        <span class="status-label">Drone images</span>
+        <strong class="status-value nums">@(Model.Gallery.Configured ? Model.Gallery.Images.Count.ToString() : "Off")</strong>
+    </article>
+</section>
+
+<partial name="_HostingCard" model="Model.Hosting" />
+
+@if (!string.IsNullOrWhiteSpace(Model.TelemetryMessage))
+{
+    <p class="notice" role="status">@Model.TelemetryMessage</p>
+}
+
+<section class="split">
+    <article class="panel">
+        <h2>Latest telemetry</h2>
+        @if (Model.Readings.Count == 0)
+        {
+            <p class="empty">No sensor readings yet. They appear here after table storage and the telemetry function are configured.</p>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Field</th>
+                            <th scope="col">Moisture</th>
+                            <th scope="col">Temperature</th>
+                            <th scope="col">Recorded</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var reading in Model.Readings)
+                    {
+                        <tr>
+                            <td>@reading.FieldName</td>
+                            <td class="nums">@reading.Moisture</td>
+                            <td class="nums">@reading.Temperature</td>
+                            <td class="nums">@reading.RecordedAt</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </article>
+    <article class="panel">
+        <h2>Irrigation</h2>
+        @if (Model.Devices.Count == 0)
+        {
+            <p class="empty">No devices yet. Ask an admin to register one.</p>
+        }
+        else
+        {
+            <form asp-action="Irrigate" method="post" class="stack">
+                <label for="irrigate-device">Device</label>
+                <select id="irrigate-device" name="deviceId" class="form-control">
+                    @foreach (var device in Model.Devices)
+                    {
+                        <option value="@device.Id">@device.Name — @device.FieldName — @device.OperationalStatus</option>
+                    }
+                </select>
+                <button class="btn btn-accent" type="submit">Trigger irrigation</button>
+            </form>
+            <form asp-action="Report" method="post" class="stack">
+                <label for="alert-device">Sensor problem</label>
+                <select id="alert-device" name="deviceId" class="form-control">
+                    @foreach (var device in Model.Devices)
+                    {
+                        <option value="@device.Id">@device.Name — @device.OperationalStatus</option>
+                    }
+                </select>
+                <button class="btn btn-line" type="submit">Report sensor problem</button>
+            </form>
+        }
+    </article>
+</section>
+
+<section class="panel">
+    <h2>Drone image</h2>
+    <partial name="_UploadForm" model="@("Dashboard")" />
+</section>

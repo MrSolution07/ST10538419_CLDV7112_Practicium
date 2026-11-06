@@ -1,0 +1,22 @@
+@model FarmGalleryModel
+
+@if (!Model.Configured)
+{
+    <p class="empty">@Model.Message</p>
+}
+else if (Model.Images.Count == 0)
+{
+    <p class="empty">No drone images yet. Upload the first one.</p>
+}
+else
+{
+    <div class="gallery">
+        @foreach (var image in Model.Images)
+        {
+            <article class="shot-card">
+                <img class="shot" src="@Url.Action("Preview", "Media", new { name = image.Name })" alt="Drone image @image.Name" />
+                <p class="shot-meta"><span>@image.Name</span> <span>@image.AuditStatus</span></p>
+            </article>
+        }
+    </div>
+}

@@ -1,0 +1,20 @@
+@model UserAccountForm
+@{
+    ViewData["Title"] = "New account";
+}
+
+<h1>New account</h1>
+<p class="lede">The password is stored as a hash. The role decides which dashboard opens after sign-in.</p>
+
+<form asp-action="Create" method="post" class="panel" novalidate>
+    <partial name="_FormErrors" />
+    <partial name="_UserFields" model="Model" />
+    <div class="actions">
+        <button class="btn btn-accent" type="submit">Save account</button>
+        <a asp-action="Index">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

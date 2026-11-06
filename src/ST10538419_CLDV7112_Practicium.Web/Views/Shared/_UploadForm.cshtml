@@ -1,0 +1,10 @@
+@model string
+
+<form asp-controller="Media" asp-action="Upload" method="post" enctype="multipart/form-data" class="stack">
+    <input type="hidden" name="returnTo" value="@Model" />
+    <div class="mb-3">
+        <label for="image-@Model">Drone image</label>
+        <input id="image-@Model" name="image" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+    </div>
+    <button class="btn btn-accent" type="submit">Upload image</button>
+</form>
