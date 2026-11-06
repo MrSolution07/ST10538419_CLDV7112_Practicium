@@ -1,6 +1,8 @@
+using ST10538419_CLDV7112_Practicium.Application.Accounts;
 using ST10538419_CLDV7112_Practicium.Application.Configuration;
 using ST10538419_CLDV7112_Practicium.Application.Data;
-using ST10538419_CLDV7112_Practicium.Application.Records;
+using ST10538419_CLDV7112_Practicium.Application.Devices;
+using ST10538419_CLDV7112_Practicium.Application.Farm;
 using ST10538419_CLDV7112_Practicium.Infrastructure.Data;
 using ST10538419_CLDV7112_Practicium.Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,7 @@ public static class DependencyInjection
     {
         services.Configure<DatabaseOptions>(configuration.GetSection(DatabaseOptions.SectionName));
         services.Configure<StorageOptions>(configuration.GetSection(StorageOptions.SectionName));
+        services.Configure<FunctionOptions>(configuration.GetSection(FunctionOptions.SectionName));
 
         var database = configuration.GetSection(DatabaseOptions.SectionName).Get<DatabaseOptions>() ?? new DatabaseOptions();
         var azureSql = configuration.GetConnectionString("AzureSql");
@@ -53,8 +56,13 @@ public static class DependencyInjection
             options.UseSqlite($"Data Source={path}");
         });
 
-        services.AddScoped<IReferenceRecordRepository, ReferenceRecordRepository>();
+        services.AddScoped<IUserAccountRepository, UserAccountRepository>();
+        services.AddScoped<IDeviceRepository, DeviceRepository>();
         services.AddScoped<IDatabaseStartup, DatabaseStartup>();
+        services.AddSingleton<IFarmTables, FarmTableGateway>();
+        services.AddSingleton<IWorkQueue, StorageWorkQueue>();
+        services.AddSingleton<IDroneImageCabinet, DroneImageCabinet>();
+        services.AddSingleton<IFieldFunctions, HttpFieldFunctions>();
         services.AddSingleton<ICloudBootstrap, CloudBootstrap>();
 
         var storage = configuration.GetSection(StorageOptions.SectionName).Get<StorageOptions>() ?? new StorageOptions();

@@ -1,5 +1,7 @@
+using ST10538419_CLDV7112_Practicium.Application.Accounts;
 using ST10538419_CLDV7112_Practicium.Application.Configuration;
 using ST10538419_CLDV7112_Practicium.Application.Data;
+using ST10538419_CLDV7112_Practicium.Domain;
 using ST10538419_CLDV7112_Practicium.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -20,28 +22,54 @@ public sealed class DatabaseStartup(
         {
             await db.Database.MigrateAsync(cancellationToken);
             logger.LogInformation("Azure SQL migrations applied.");
-            return;
         }
-
-        var path = ResolveSqlitePath();
-        var directory = Path.GetDirectoryName(path);
-        if (!string.IsNullOrEmpty(directory))
+        else
         {
-            Directory.CreateDirectory(directory);
-        }
-
-        await db.Database.EnsureCreatedAsync(cancellationToken);
-        if (!await db.ReferenceRecords.AnyAsync(cancellationToken))
-        {
-            db.ReferenceRecords.Add(new ReferenceRecord
+            var path = ResolveSqlitePath();
+            var directory = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(directory))
             {
-                Title = "Foundation check",
-                Notes = "Sample row so the reference module is visible. Archive it once the brief has real data."
-            });
-            await db.SaveChangesAsync(cancellationToken);
+                Directory.CreateDirectory(directory);
+            }
+
+            await db.Database.EnsureCreatedAsync(cancellationToken);
+            logger.LogInformation("SQLite database ready at {Path}.", path);
         }
 
-        logger.LogInformation("SQLite database ready at {Path}.", path);
+        await SeedFarmAsync(cancellationToken);
+    }
+
+    private async Task SeedFarmAsync(CancellationToken cancellationToken)
+    {
+        foreach (var demo in DemoAccounts.All)
+        {
+            var exists = await db.UserAccounts.AnyAsync(
+                account => account.Username == demo.Username,
+                cancellationToken);
+            if (exists)
+            {
+                continue;
+            }
+
+            db.UserAccounts.Add(new UserAccount
+            {
+                Username = demo.Username,
+                PasswordHash = PasswordHasher.Hash(demo.Password),
+                Role = demo.Role
+            });
+        }
+
+        if (!await db.Devices.AnyAsync(cancellationToken))
+        {
+            db.Devices.Add(new Device
+            {
+                Name = "North pivot",
+                FieldName = "North",
+                OperationalStatus = DeviceStatuses.Idle
+            });
+        }
+
+        await db.SaveChangesAsync(cancellationToken);
     }
 
     private string ResolveSqlitePath()
