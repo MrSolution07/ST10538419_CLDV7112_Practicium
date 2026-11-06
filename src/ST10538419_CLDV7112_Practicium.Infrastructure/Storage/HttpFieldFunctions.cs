@@ -28,6 +28,7 @@ public sealed class HttpFieldFunctions(IOptions<FunctionOptions> options) : IFie
                 "Telemetry is unavailable until the function URL is configured.");
         }
 
+        // Task (d): farmer dashboard calls the HTTP GET function.
         var url = $"{options.Value.BaseUrl!.TrimEnd('/')}/api/telemetry";
         if (!string.IsNullOrWhiteSpace(fieldName))
         {
@@ -56,6 +57,7 @@ public sealed class HttpFieldFunctions(IOptions<FunctionOptions> options) : IFie
             return new FieldCall<string>(false, false, null, "Irrigation is unavailable until the function URL is configured.");
         }
 
+        // Task (d): Trigger irrigation and sensor alerts call the HTTP POST function.
         var url = $"{options.Value.BaseUrl!.TrimEnd('/')}/api/irrigation";
         using var request = new HttpRequestMessage(HttpMethod.Post, url)
         {

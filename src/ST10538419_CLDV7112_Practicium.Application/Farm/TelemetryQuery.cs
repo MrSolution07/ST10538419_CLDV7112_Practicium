@@ -11,6 +11,7 @@ public sealed class TelemetryQuery(IFarmTables tables) : ITelemetryQuery
 {
     public async Task<IReadOnlyList<SensorReading>> LatestAsync(string? fieldName, CancellationToken cancellationToken)
     {
+        // Task (d): read path. Source table is sensorreadings.
         var rows = await tables.ListAsync(CloudResources.SensorReadings, 40, cancellationToken);
         IEnumerable<SensorReading> readings = rows.Select(Map);
         if (!string.IsNullOrWhiteSpace(fieldName))

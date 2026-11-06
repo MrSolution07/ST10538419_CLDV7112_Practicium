@@ -8,6 +8,7 @@ namespace ST10538419_CLDV7112_Practicium.Functions;
 public sealed class DroneImageAuditFunction(IServiceScopeFactory scopes, ILogger<DroneImageAuditFunction> logger)
 {
     [Function(nameof(DroneImageAuditFunction))]
+    // Task (d): blob trigger on drone-images. ImageAuditProcessor writes the audit into the imageaudits table.
     public async Task Run(
         [BlobTrigger("drone-images/{name}", Connection = "AzureWebJobsStorage")] Stream blob,
         string name,

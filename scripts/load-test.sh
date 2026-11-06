@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Task (e): 20 concurrent workers call the App Service for 12 minutes (720 seconds).
 set -euo pipefail
 
 URL="${1:-https://st10538419.azurewebsites.net}"

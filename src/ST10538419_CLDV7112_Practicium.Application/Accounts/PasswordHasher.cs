@@ -6,6 +6,7 @@ public static class PasswordHasher
 {
     private const int Iterations = 100_000;
 
+    // Task (b): PBKDF2-SHA256 value written to UserAccounts.PasswordHash. The plain password is not stored.
     public static string Hash(string password)
     {
         var salt = RandomNumberGenerator.GetBytes(16);

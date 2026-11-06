@@ -11,6 +11,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Task (b): UserAccounts holds the username, the password hash, and the role.
         var account = modelBuilder.Entity<UserAccount>();
         account.ToTable("UserAccounts");
         account.HasKey(entity => entity.Id);

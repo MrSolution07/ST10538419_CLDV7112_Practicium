@@ -22,6 +22,7 @@ public sealed class ImageAuditProcessor(IFarmTables tables) : IImageAuditProcess
         }
 
         var recordedAt = DateTime.UtcNow.ToString("O");
+        // Task (d): one audit row per upload. Status starts as Received.
         await tables.UpsertAsync(
             CloudResources.ImageAudits,
             blobName.Trim(),

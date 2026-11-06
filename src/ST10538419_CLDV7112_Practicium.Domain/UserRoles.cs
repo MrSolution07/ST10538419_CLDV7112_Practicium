@@ -1,5 +1,6 @@
 namespace ST10538419_CLDV7112_Practicium.Domain;
 
+// Task (b): the only three roles stored on a user account.
 public static class UserRoles
 {
     public const string Farmer = "Farmer";

@@ -35,6 +35,7 @@ public sealed class IrrigationIntake(IDeviceService devices, IFarmTables tables,
 
         var commandId = Guid.NewGuid().ToString("N");
         var recordedAt = DateTime.UtcNow.ToString("O");
+        // Task (d): row in irrigationcommands (Pending), then the same command on the irrigation-commands queue.
         await tables.UpsertAsync(
             CloudResources.IrrigationCommands,
             deviceId.ToString("D"),

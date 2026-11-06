@@ -18,6 +18,7 @@ public sealed class DatabaseStartup(
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        // Task (b): production applies the EF migrations to Azure SQL. Development keeps using SQLite.
         if (options.Value.UseSqlServer)
         {
             await db.Database.MigrateAsync(cancellationToken);

@@ -30,12 +30,15 @@ public sealed class CloudBootstrap(
             return;
         }
 
+        // Task (c): private container for drone images uploaded from the site.
         var container = new BlobContainerClient(storage.BlobConnectionString, CloudResources.DroneContainer);
         await container.CreateIfNotExistsAsync(PublicAccessType.None, cancellationToken: cancellationToken);
 
+        // Task (d): queue the irrigation function listens on.
         var queue = new QueueClient(storage.QueueConnectionString, CloudResources.IrrigationQueue);
         await queue.CreateIfNotExistsAsync(cancellationToken: cancellationToken);
 
+        // Task (c) and (d): sensor readings, irrigation commands, environmental logs, and image audits.
         foreach (var tableName in new[]
         {
             CloudResources.SensorReadings,

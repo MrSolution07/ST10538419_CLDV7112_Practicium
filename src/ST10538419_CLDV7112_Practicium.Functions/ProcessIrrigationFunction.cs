@@ -9,6 +9,7 @@ namespace ST10538419_CLDV7112_Practicium.Functions;
 public sealed class ProcessIrrigationFunction(IServiceScopeFactory scopes, ILogger<ProcessIrrigationFunction> logger)
 {
     [Function(nameof(ProcessIrrigationFunction))]
+    // Task (d): queue trigger on irrigation-commands. IrrigationProcessor updates the device row in Azure SQL.
     public async Task Run(
         [QueueTrigger(CloudResources.IrrigationQueue, Connection = "AzureWebJobsStorage")] string message,
         CancellationToken cancellationToken)

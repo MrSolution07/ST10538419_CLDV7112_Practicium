@@ -10,6 +10,7 @@ namespace ST10538419_CLDV7112_Practicium.Functions;
 public sealed class GetTelemetryFunction(IServiceScopeFactory scopes, IConfiguration configuration)
 {
     [Function(nameof(GetTelemetryFunction))]
+    // Task (d): HTTP GET /api/telemetry. The farmer dashboard calls this for the latest sensorreadings rows.
     public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "telemetry")] HttpRequestData request,
         CancellationToken cancellationToken)

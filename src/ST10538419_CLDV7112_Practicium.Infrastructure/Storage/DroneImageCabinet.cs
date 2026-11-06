@@ -11,6 +11,7 @@ public sealed class DroneImageCabinet(IOptions<StorageOptions> options) : IDrone
 {
     public bool Configured => options.Value.BlobConfigured;
 
+    // Task (c): the web upload writes the drone image into the drone-images container.
     public async Task UploadAsync(string blobName, Stream content, string contentType, CancellationToken cancellationToken)
     {
         var blob = await BlobAsync(blobName, cancellationToken);

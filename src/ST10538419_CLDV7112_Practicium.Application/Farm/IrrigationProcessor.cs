@@ -33,6 +33,7 @@ public sealed class IrrigationProcessor(IDeviceService devices, IFarmTables tabl
             ? DeviceStatuses.NeedsAttention
             : DeviceStatuses.Irrigating;
 
+        // Task (d): master registry. Irrigate sets the device to Irrigating. A sensor alert sets Needs Attention.
         var updated = await devices.SetStatusAsync(payload.DeviceId, status, cancellationToken);
         if (!updated.Succeeded)
         {

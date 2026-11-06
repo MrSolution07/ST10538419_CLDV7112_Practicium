@@ -26,6 +26,7 @@ param functionSharedSecret string
 
 var suffix = uniqueString(resourceGroup().id)
 var planName = '${namePrefix}-plan'
+// Task (a): public site is https://st10538419.azurewebsites.net
 var webName = 'st10538419'
 var sqlServerName = toLower(take('${namePrefix}${suffix}', 20))
 var databaseName = 'ST10538419_CLDV7112_Practicium'
@@ -141,6 +142,7 @@ resource web 'Microsoft.Web/sites@2024-04-01' = {
           value: 'Production'
         }
         {
+          // Task (b): the live MVC site uses Azure SQL, not the local SQLite file.
           name: 'Database__Provider'
           value: 'SqlServer'
         }
@@ -165,6 +167,7 @@ resource web 'Microsoft.Web/sites@2024-04-01' = {
           value: storageConnection
         }
         {
+          // Task (f): request telemetry from this site is sent to Application Insights.
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: insights.properties.ConnectionString
         }

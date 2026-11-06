@@ -11,6 +11,7 @@ namespace ST10538419_CLDV7112_Practicium.Functions;
 public sealed class PostIrrigationFunction(IServiceScopeFactory scopes, IConfiguration configuration)
 {
     [Function(nameof(PostIrrigationFunction))]
+    // Task (d): HTTP POST /api/irrigation. IrrigationIntake stores the command and places it on the queue.
     public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "irrigation")] HttpRequestData request,
         CancellationToken cancellationToken)
